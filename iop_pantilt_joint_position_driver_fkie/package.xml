@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <name>iop_pantilt_joint_position_driver_fkie</name>
+  <version>2.0.0</version>
+  <description>The implementation for Pantilt Joint Position Driver and Sensor service</description>
+
+  <maintainer email="alexander.tiderko@fkie.fraunhofer.de">Alexander Tiderko</maintainer>
+  <license>GPLv2</license>
+  <url type="website">https://github.com/fkie/iop_jaus_manipulator</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>boost</build_depend>
+  <build_depend>iop_management_fkie</build_depend>
+  <build_depend>iop_manipulator_core_fkie</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <run_depend>boost</run_depend>
+  <run_depend>iop_component_fkie</run_depend>
+  <run_depend>iop_management_fkie</run_depend>
+  <run_depend>iop_manipulator_core_fkie</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+
+  <export>
+    <iop_component_fkie plugin="${prefix}/plugin_iop.xml" />
+  </export>
+
+</package>
