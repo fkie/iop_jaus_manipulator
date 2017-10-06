@@ -66,6 +66,7 @@ void PanTiltJointPositionSensor_ReceiveFSM::setupNotifications()
 	pEvents_ReceiveFSM->registerNotification("Receiving", ieHandler, "InternalStateChange_To_PanTiltJointPositionSensor_ReceiveFSM_Receiving_Ready", "Events_ReceiveFSM");
 	registerNotification("Receiving_Ready", pEvents_ReceiveFSM->getHandler(), "InternalStateChange_To_Events_ReceiveFSM_Receiving_Ready", "PanTiltJointPositionSensor_ReceiveFSM");
 	registerNotification("Receiving", pEvents_ReceiveFSM->getHandler(), "InternalStateChange_To_Events_ReceiveFSM_Receiving", "PanTiltJointPositionSensor_ReceiveFSM");
+	pEvents_ReceiveFSM->get_event_handler().register_query(QueryPanTiltJointPositions::ID);
 	p_cfg_reader.readRosConfiguration();
 	std::vector<std::string> joint_names = p_cfg_reader.getJointNames();
 	if (joint_names.size() > 0) {
@@ -80,7 +81,6 @@ void PanTiltJointPositionSensor_ReceiveFSM::setupNotifications()
 	p_sub_pos_tilt = nh.subscribe<std_msgs::Float64>("pos_tilt", 1, &PanTiltJointPositionSensor_ReceiveFSM::pTiltFloatCallback, this);
 	p_sub_pos_pan32 = nh.subscribe<std_msgs::Float32>("pos_pan32", 1, &PanTiltJointPositionSensor_ReceiveFSM::pPanFloat32Callback, this);
 	p_sub_pos_tilt32 = nh.subscribe<std_msgs::Float32>("pos_tilt32", 1, &PanTiltJointPositionSensor_ReceiveFSM::pTiltFloat32Callback, this);
-	this->pEvents_ReceiveFSM->set_event_report(QueryPanTiltJointPositions::ID, p_report_pantilt, true);
 }
 
 void PanTiltJointPositionSensor_ReceiveFSM::sendReportPanTiltJointPositionsAction(QueryPanTiltJointPositions msg, Receive::Body::ReceiveRec transportData)
@@ -111,7 +111,7 @@ void PanTiltJointPositionSensor_ReceiveFSM::pUpdatePosition(double pan, double t
 		// set event handling
 		p_report_pantilt.getBody()->getPanTiltJointPositionRec()->setJoint1Position(p_joint1_position);
 		p_report_pantilt.getBody()->getPanTiltJointPositionRec()->setJoint2Position(p_joint2_position);
-		this->pEvents_ReceiveFSM->set_event_report(QueryPanTiltJointPositions::ID, p_report_pantilt, true);
+		pEvents_ReceiveFSM->get_event_handler().set_report(QueryPanTiltJointPositions::ID, &p_report_pantilt);
 	}
 	p_mutex.unlock();
 	// forward position to the driver
