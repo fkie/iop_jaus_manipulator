@@ -12,7 +12,6 @@
   <build_depend>boost</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>iop_management_fkie</build_depend>
-  <build_depend>iop_manipulator_core_fkie</build_depend>
   <build_depend>moveit_core</build_depend>
   <build_depend>moveit_ros_planning</build_depend>
   <build_depend>sensor_msgs</build_depend>
@@ -20,7 +19,6 @@
   <run_depend>roscpp</run_depend>
   <run_depend>iop_component_fkie</run_depend>
   <run_depend>iop_management_fkie</run_depend>
-  <run_depend>iop_manipulator_core_fkie</run_depend>
   <run_depend>moveit_core</run_depend>
   <run_depend>moveit_ros_planning</run_depend>
   <run_depend>sensor_msgs</run_depend>

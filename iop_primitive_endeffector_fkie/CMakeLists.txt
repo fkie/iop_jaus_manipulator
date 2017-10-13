@@ -6,7 +6,6 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
 find_package(catkin REQUIRED COMPONENTS
                 iop_management_fkie
-                iop_manipulator_core_fkie
                 moveit_core
                 moveit_ros_planning
                 roscpp
@@ -23,7 +22,6 @@ iop_init(COMPONENT_ID 60)
 catkin_package(
     CATKIN_DEPENDS
         iop_management_fkie
-        iop_manipulator_core_fkie
         moveit_core
         sensor_msgs
     DEPENDS Boost
