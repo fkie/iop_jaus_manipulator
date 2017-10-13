@@ -1,0 +1,10 @@
+<library path="libiop_primitive_manipulator_fkie">
+  <class name="PrimitiveManipulator" type="iop::PrimitiveManipulatorPlugin" base_class_type="iop::PluginInterface">
+    <description>
+      PrimitiveManipulator Service Plugin
+    </description>
+    <iop_service name="PrimitiveManipulator" id="urn:jaus:jss:manipulator:PrimitiveManipulator" version="2.0">
+      <inherits_from id="urn:jaus:jss:core:Management" min_version="1.1"/>
+    </iop_service>
+  </class>
+</library>

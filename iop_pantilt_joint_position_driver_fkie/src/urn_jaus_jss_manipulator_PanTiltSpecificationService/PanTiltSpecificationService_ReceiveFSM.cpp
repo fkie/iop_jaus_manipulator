@@ -71,15 +71,19 @@ void PanTiltSpecificationService_ReceiveFSM::sendReportPanTiltSpecificationsActi
 	uint8_t component_id = transportData.getSrcComponentID();
 	JausAddress sender(subsystem_id, node_id, component_id);
 	ROS_DEBUG_NAMED("PanTiltSpecificationService", "ReportPanTiltSpecifications to %d.%d.%d", subsystem_id, node_id, component_id);
-	ReportPanTiltSpecifications response;
-	iop_manipulator_core_fkie::ReportPanTiltSpecificationsRec spec = p_cfg_reader.getPantiltSpecification();
-	unsigned char bytes[spec.getSize()];
-	spec.encode(bytes);
-	response.getBody()->getReportPanTiltSpecificationsRec()->decode(bytes);
-	sendJausMessage(response, sender);
+//	ReportPanTiltSpecifications response;
+//	iop_manipulator_core_fkie::ReportPanTiltSpecificationsRec spec = p_cfg_reader.getPantiltSpecification();
+//	unsigned char bytes[spec.getSize()];
+//	spec.encode(bytes);
+//	response.getBody()->getReportPanTiltSpecificationsRec()->decode(bytes);
+	sendJausMessage(p_cfg_reader.getJausMsg(), sender);
 }
 
 
+std::pair<std::string, std::string> PanTiltSpecificationService_ReceiveFSM::getJointNames()
+{
+	return p_cfg_reader.getJointNames();
+}
 
 
 

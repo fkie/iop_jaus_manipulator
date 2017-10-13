@@ -43,7 +43,6 @@ along with this program; or you can read the full license at
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
 #include <boost/thread/recursive_mutex.hpp>
-#include "iop_manipulator_core_fkie/PantiltCfgReader.h"
 
 #include "PanTiltJointPositionDriver_ReceiveFSM_sm.h"
 
@@ -82,7 +81,6 @@ protected:
 	urn_jaus_jss_core_Management::Management_ReceiveFSM* pManagement_ReceiveFSM;
 
 	boost::recursive_mutex p_mutex;
-	iop_manipulator_core_fkie::PantiltCfgReader p_cfg_reader;
 	std::string p_joint1_name;
 	std::string p_joint2_name;
 	double p_joint1_cmd_position;

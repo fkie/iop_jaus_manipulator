@@ -24,10 +24,13 @@ along with this program; or you can read the full license at
 #include "urn_jaus_jss_manipulator_PanTiltJointPositionSensor/PanTiltJointPositionSensor_ReceiveFSM.h"
 
 #include <iop_component_fkie/iop_component.h>
+#include <iop_component_fkie/iop_config.h>
+#include "urn_jaus_jss_manipulator_PanTiltSpecificationService/PanTiltSpecificationServiceService.h"
 
 
 using namespace JTS;
 using namespace urn_jaus_jss_manipulator_PanTiltJointPositionDriver;
+using namespace urn_jaus_jss_manipulator_PanTiltSpecificationService;
 
 namespace urn_jaus_jss_manipulator_PanTiltJointPositionSensor
 {
@@ -67,20 +70,22 @@ void PanTiltJointPositionSensor_ReceiveFSM::setupNotifications()
 	registerNotification("Receiving_Ready", pEvents_ReceiveFSM->getHandler(), "InternalStateChange_To_Events_ReceiveFSM_Receiving_Ready", "PanTiltJointPositionSensor_ReceiveFSM");
 	registerNotification("Receiving", pEvents_ReceiveFSM->getHandler(), "InternalStateChange_To_Events_ReceiveFSM_Receiving", "PanTiltJointPositionSensor_ReceiveFSM");
 	pEvents_ReceiveFSM->get_event_handler().register_query(QueryPanTiltJointPositions::ID);
-	p_cfg_reader.readRosConfiguration();
-	std::vector<std::string> joint_names = p_cfg_reader.getJointNames();
-	if (joint_names.size() > 0) {
-		p_joint1_name = joint_names[0];
+	iop::Component &cmp = iop::Component::get_instance();
+	PanTiltSpecificationServiceService *spec_srv = static_cast<PanTiltSpecificationServiceService*>(cmp.get_service("PanTiltSpecificationServiceService"));
+	if (spec_srv != NULL) {
+		std::pair<std::string, std::string> joint_names = spec_srv->pPanTiltSpecificationService_ReceiveFSM->getJointNames();
+		p_joint1_name = joint_names.first;
+		p_joint2_name = joint_names.second;
+	} else {
+		throw std::runtime_error("[PanTiltJointPositionSensor] no PanTiltSpecificationServiceService in configuration found! Please include its plugin first (in the list)!");
 	}
-	if (joint_names.size() > 1) {
-		p_joint2_name = joint_names[1];
-	}
-	ros::NodeHandle nh;
-	p_sub_pos_joints = nh.subscribe<sensor_msgs::JointState>("pos_joints", 1, &PanTiltJointPositionSensor_ReceiveFSM::pJoinStateCallback, this);
-	p_sub_pos_pan = nh.subscribe<std_msgs::Float64>("pos_pan", 1, &PanTiltJointPositionSensor_ReceiveFSM::pPanFloatCallback, this);
-	p_sub_pos_tilt = nh.subscribe<std_msgs::Float64>("pos_tilt", 1, &PanTiltJointPositionSensor_ReceiveFSM::pTiltFloatCallback, this);
-	p_sub_pos_pan32 = nh.subscribe<std_msgs::Float32>("pos_pan32", 1, &PanTiltJointPositionSensor_ReceiveFSM::pPanFloat32Callback, this);
-	p_sub_pos_tilt32 = nh.subscribe<std_msgs::Float32>("pos_tilt32", 1, &PanTiltJointPositionSensor_ReceiveFSM::pTiltFloat32Callback, this);
+
+	iop::Config cfg("~PanTiltJointPositionSensor");
+	p_sub_pos_joints = cfg.subscribe<sensor_msgs::JointState>("pos_joints", 1, &PanTiltJointPositionSensor_ReceiveFSM::pJoinStateCallback, this);
+	p_sub_pos_pan = cfg.subscribe<std_msgs::Float64>("pos_pan", 1, &PanTiltJointPositionSensor_ReceiveFSM::pPanFloatCallback, this);
+	p_sub_pos_tilt = cfg.subscribe<std_msgs::Float64>("pos_tilt", 1, &PanTiltJointPositionSensor_ReceiveFSM::pTiltFloatCallback, this);
+	p_sub_pos_pan32 = cfg.subscribe<std_msgs::Float32>("pos_pan32", 1, &PanTiltJointPositionSensor_ReceiveFSM::pPanFloat32Callback, this);
+	p_sub_pos_tilt32 = cfg.subscribe<std_msgs::Float32>("pos_tilt32", 1, &PanTiltJointPositionSensor_ReceiveFSM::pTiltFloat32Callback, this);
 }
 
 void PanTiltJointPositionSensor_ReceiveFSM::sendReportPanTiltJointPositionsAction(QueryPanTiltJointPositions msg, Receive::Body::ReceiveRec transportData)

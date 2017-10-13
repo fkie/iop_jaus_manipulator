@@ -21,15 +21,15 @@ along with this program; or you can read the full license at
 /** \author Alexander Tiderko */
 
 
-#ifndef PANTILTSPECIFICATIONSERVICE_RECEIVEFSM_H
-#define PANTILTSPECIFICATIONSERVICE_RECEIVEFSM_H
+#ifndef MANIPULATORSPECIFICATIONSERVICE_RECEIVEFSM_H
+#define MANIPULATORSPECIFICATIONSERVICE_RECEIVEFSM_H
 
 #include "JausUtils.h"
 #include "InternalEvents/InternalEventHandler.h"
 #include "Transport/JausTransport.h"
 #include "JTSStateMachine.h"
-#include "urn_jaus_jss_manipulator_PanTiltSpecificationService/Messages/MessageSet.h"
-#include "urn_jaus_jss_manipulator_PanTiltSpecificationService/InternalEvents/InternalEventsSet.h"
+#include "urn_jaus_jss_manipulator_ManipulatorSpecificationService/Messages/MessageSet.h"
+#include "urn_jaus_jss_manipulator_ManipulatorSpecificationService/InternalEvents/InternalEventsSet.h"
 
 #include "InternalEvents/Receive.h"
 #include "InternalEvents/Send.h"
@@ -37,42 +37,43 @@ along with this program; or you can read the full license at
 #include "urn_jaus_jss_core_Transport/Transport_ReceiveFSM.h"
 #include "urn_jaus_jss_core_Events/Events_ReceiveFSM.h"
 
-#include "iop_pantilt_joint_position_driver_fkie/PantiltCfgReader.h"
+#include "iop_manipulator_specification_service_fkie/ManipulatorUrdfReader.h"
 
-#include "PanTiltSpecificationService_ReceiveFSM_sm.h"
+#include "ManipulatorSpecificationService_ReceiveFSM_sm.h"
 
-namespace urn_jaus_jss_manipulator_PanTiltSpecificationService
+namespace urn_jaus_jss_manipulator_ManipulatorSpecificationService
 {
 
-class DllExport PanTiltSpecificationService_ReceiveFSM : public JTS::StateMachine
+class DllExport ManipulatorSpecificationService_ReceiveFSM : public JTS::StateMachine
 {
 public:
-	PanTiltSpecificationService_ReceiveFSM(urn_jaus_jss_core_Transport::Transport_ReceiveFSM* pTransport_ReceiveFSM, urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM);
-	virtual ~PanTiltSpecificationService_ReceiveFSM();
+	ManipulatorSpecificationService_ReceiveFSM(urn_jaus_jss_core_Transport::Transport_ReceiveFSM* pTransport_ReceiveFSM, urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM);
+	virtual ~ManipulatorSpecificationService_ReceiveFSM();
 
 	/// Handle notifications on parent state changes
 	virtual void setupNotifications();
 
 	/// Action Methods
-	virtual void sendReportPanTiltSpecificationsAction(QueryPanTiltSpecifications msg, Receive::Body::ReceiveRec transportData);
+	virtual void sendReportManipulatorSpecificationsAction(QueryManipulatorSpecifications msg, Receive::Body::ReceiveRec transportData);
 
-
+	/** Returns the vector with joint names. The end effector is not included. */
+	std::vector<std::string> getJointNames();
 	/// Guard Methods
 
-	std::pair<std::string, std::string> getJointNames();
 
-	PanTiltSpecificationService_ReceiveFSMContext *context;
+
+	ManipulatorSpecificationService_ReceiveFSMContext *context;
 
 protected:
 
     /// References to parent FSMs
 	urn_jaus_jss_core_Transport::Transport_ReceiveFSM* pTransport_ReceiveFSM;
 	urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM;
-	iop::PantiltCfgReader p_cfg_reader;
+	iop::ManipulatorUrdfReader p_urdf_reader;
 
 
 };
 
 };
 
-#endif // PANTILTSPECIFICATIONSERVICE_RECEIVEFSM_H
+#endif // MANIPULATORSPECIFICATIONSERVICE_RECEIVEFSM_H

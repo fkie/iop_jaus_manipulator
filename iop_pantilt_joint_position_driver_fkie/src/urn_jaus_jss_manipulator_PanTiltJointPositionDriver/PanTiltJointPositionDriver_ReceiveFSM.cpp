@@ -23,10 +23,14 @@ along with this program; or you can read the full license at
 
 #include "urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriver_ReceiveFSM.h"
 
+#include <iop_component_fkie/iop_component.h>
+#include <iop_component_fkie/iop_config.h>
+#include "urn_jaus_jss_manipulator_PanTiltSpecificationService/PanTiltSpecificationServiceService.h"
 
 
 
 using namespace JTS;
+using namespace urn_jaus_jss_manipulator_PanTiltSpecificationService;
 
 namespace urn_jaus_jss_manipulator_PanTiltJointPositionDriver
 {
@@ -89,21 +93,22 @@ void PanTiltJointPositionDriver_ReceiveFSM::setupNotifications()
 	registerNotification("Receiving_Ready", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving_Ready", "PanTiltJointPositionDriver_ReceiveFSM");
 	registerNotification("Receiving", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving", "PanTiltJointPositionDriver_ReceiveFSM");
 
-	p_cfg_reader.readRosConfiguration();
-	std::vector<std::string> joint_names = p_cfg_reader.getJointNames();
-	if (joint_names.size() > 0) {
-		p_joint1_name = joint_names[0];
+	iop::Component &cmp = iop::Component::get_instance();
+	PanTiltSpecificationServiceService *spec_srv = static_cast<PanTiltSpecificationServiceService*>(cmp.get_service("PanTiltSpecificationServiceService"));
+	if (spec_srv != NULL) {
+		std::pair<std::string, std::string> joint_names = spec_srv->pPanTiltSpecificationService_ReceiveFSM->getJointNames();
+		p_joint1_name = joint_names.first;
+		p_joint2_name = joint_names.second;
+	} else {
+		throw std::runtime_error("[PanTiltJointPositionDriver] no PanTiltSpecificationServiceService in configuration found! Please include its plugin first (in the list)!");
 	}
-	if (joint_names.size() > 1) {
-		p_joint2_name = joint_names[1];
-	}
-//	p_cfg_reader.p_print_spec();
-	ros::NodeHandle nh;
-	p_pub_cmd_pos_joints = nh.advertise<sensor_msgs::JointState>("cmd_pos_joints", 1, false);
-	p_pub_cmd_pos_pan = nh.advertise<std_msgs::Float64>("cmd_pos_pan", 1, false);
-	p_pub_cmd_pos_tilt = nh.advertise<std_msgs::Float64>("cmd_pos_tilt", 1, false);
-	p_pub_cmd_pos_pan32 = nh.advertise<std_msgs::Float32>("cmd_pos_pan32", 1, false);
-	p_pub_cmd_pos_tilt32 = nh.advertise<std_msgs::Float32>("cmd_pos_tilt32", 1, false);
+
+	iop::Config cfg("~PanTiltJointPositionDriver");
+	p_pub_cmd_pos_joints = cfg.advertise<sensor_msgs::JointState>("cmd_pos_joints", 1, false);
+	p_pub_cmd_pos_pan = cfg.advertise<std_msgs::Float64>("cmd_pos_pan", 1, false);
+	p_pub_cmd_pos_tilt = cfg.advertise<std_msgs::Float64>("cmd_pos_tilt", 1, false);
+	p_pub_cmd_pos_pan32 = cfg.advertise<std_msgs::Float32>("cmd_pos_pan32", 1, false);
+	p_pub_cmd_pos_tilt32 = cfg.advertise<std_msgs::Float32>("cmd_pos_tilt32", 1, false);
 }
 
 void PanTiltJointPositionDriver_ReceiveFSM::sendReportCommandedPanTiltJointPositionsAction(QueryCommandedPanTiltJointPositions msg, Receive::Body::ReceiveRec transportData)

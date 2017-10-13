@@ -1,27 +1,31 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(iop_pantilt_joint_position_driver_fkie)
+project(iop_manipulator_specification_service_fkie)
 
 # we need C++11 enabled if compile with kinetic
-#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  iop_management_fkie
-  moveit_msgs
-  roscpp
-  sensor_msgs
+    eigen_conversions
+    iop_management_fkie
+    moveit_core
+    moveit_msgs
+    moveit_ros_planning
+    roscpp
+    sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 find_package(Boost REQUIRED COMPONENTS system thread)
+find_package(PkgConfig REQUIRED)
+pkg_search_module(EIGEN3 REQUIRED eigen3)
 
 
 iop_init(COMPONENT_ID 0)
-iop_export_service(urn_jaus_jss_manipulator_PanTiltSpecificationService
-                   urn_jaus_jss_manipulator_PanTiltMotionProfileService)
+iop_export_service(urn_jaus_jss_manipulator_ManipulatorSpecificationService)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -29,11 +33,14 @@ iop_export_service(urn_jaus_jss_manipulator_PanTiltSpecificationService
 # catkin_python_setup()
 
 catkin_package(
-    INCLUDE_DIRS include/public
+    INCLUDE_DIRS include/public ${EIGEN3_INCLUDE_DIRS}
     LIBRARIES ${PROJECT_NAME}
     CATKIN_DEPENDS
+        eigen_conversions
         iop_management_fkie
+        moveit_core
         moveit_msgs
+        moveit_ros_planning
         sensor_msgs
     DEPENDS Boost
 )
@@ -49,45 +56,32 @@ iop_code_generator(
 # OVERRIDES: files which override the generated files while build. The generated files are copied to the same location with .gen extension
 # EXTERN_SERVICES: the generated folder name of a service which is used from other library. This folder must be deleted while build.
   IDLS
-    urn.jaus.jss.core-v1.1/AccessControl.xml
     urn.jaus.jss.core-v1.1/Events.xml
-    urn.jaus.jss.core-v1.1/Management.xml
     urn.jaus.jss.core-v1.1/Transport.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltJointPositionDriver.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltJointPositionSensor.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltMotionProfileService.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltSpecificationService.xml
+    urn.jaus.jss.manipulator-v2.0/ManipulatorSpecificationService.xml
   OWN_IDLS
   OVERRIDES
-    include/urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriver_ReceiveFSM.h
-    include/urn_jaus_jss_manipulator_PanTiltJointPositionSensor/PanTiltJointPositionSensor_ReceiveFSM.h
-    include/urn_jaus_jss_manipulator_PanTiltMotionProfileService/PanTiltMotionProfileService_ReceiveFSM.h
-    include/urn_jaus_jss_manipulator_PanTiltSpecificationService/PanTiltSpecificationService_ReceiveFSM.h
-    src/urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriver_ReceiveFSM.cpp
-    src/urn_jaus_jss_manipulator_PanTiltJointPositionSensor/PanTiltJointPositionSensor_ReceiveFSM.cpp
-    src/urn_jaus_jss_manipulator_PanTiltMotionProfileService/PanTiltMotionProfileService_ReceiveFSM.cpp
-    src/urn_jaus_jss_manipulator_PanTiltSpecificationService/PanTiltSpecificationService_ReceiveFSM.cpp
+    include/urn_jaus_jss_manipulator_ManipulatorSpecificationService/ManipulatorSpecificationService_ReceiveFSM.h
+    src/urn_jaus_jss_manipulator_ManipulatorSpecificationService/ManipulatorSpecificationService_ReceiveFSM.cpp
     src/main.cpp
   EXTERN_SERVICES
-    urn_jaus_jss_core_AccessControl
     urn_jaus_jss_core_Events
-    urn_jaus_jss_core_Management
     urn_jaus_jss_core_Transport
   GENERATED_SOURCES cppfiles
 )
+
+add_definitions(${EIGEN3_DEFINITIONS})
 
 include_directories(
     include/public
     ${catkin_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}
-            src/PantiltCfgReader.cpp
-            src/PanTiltJointPositionDriverPlugin.cpp
-            src/PanTiltJointPositionSensorPlugin.cpp
-            src/PanTiltMotionProfileServicePlugin.cpp
-            src/PanTiltSpecificationServicePlugin.cpp
+            src/ManipulatorUrdfReader.cpp
+            src/ManipulatorSpecificationServicePlugin.cpp
             ${cppfiles}
 )
 
