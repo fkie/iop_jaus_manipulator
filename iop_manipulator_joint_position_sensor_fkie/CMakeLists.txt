@@ -50,9 +50,9 @@ iop_code_generator(
      src/urn_jaus_jss_manipulator_ManipulatorJointPositionSensor/ManipulatorJointPositionSensor_ReceiveFSM.cpp
     src/main.cpp
   EXTERN_SERVICES
-    urn_jaus_jss_manipulator_ManipulatorSpecificationService
     urn_jaus_jss_core_Events
     urn_jaus_jss_core_Transport
+    urn_jaus_jss_manipulator_ManipulatorSpecificationService
   GENERATED_SOURCES cppfiles
 )
 
@@ -70,6 +70,12 @@ add_library(${PROJECT_NAME}
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
                       ${catkin_LIBRARIES}
+)
+
+install(
+  DIRECTORY ${IOP_INSTALL_INCLUDE_DIRS} DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
+  PATTERN "*.old" EXCLUDE
+  PATTERN "*.gen" EXCLUDE
 )
 
 install(TARGETS ${PROJECT_NAME}

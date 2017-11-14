@@ -68,7 +68,7 @@ void ManipulatorJointPositionSensor_ReceiveFSM::sendQueryJointPositionsAction(Qu
 	std::map<std::string, float>::iterator it_ps;
 	for (unsigned int index = 0; index < p_joint_names.size(); index++) {
 		ReportJointPositions::Body::JointPositionList::JointPositionRec joint_position;
-		// TODO: read from config the type of the joint
+		// TODO: read from config the type of the joint and use radians or meters
 		joint_position.getJointPosition()->setRadianAsUnsignedIntegerAt0(p_joint_positions[p_joint_names[index]]);
 		response.getBody()->getJointPositionList()->addElement(joint_position);
 	}
