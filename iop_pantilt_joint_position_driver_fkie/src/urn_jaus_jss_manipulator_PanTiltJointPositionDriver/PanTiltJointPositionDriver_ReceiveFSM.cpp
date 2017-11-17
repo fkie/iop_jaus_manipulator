@@ -94,13 +94,13 @@ void PanTiltJointPositionDriver_ReceiveFSM::setupNotifications()
 	registerNotification("Receiving", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving", "PanTiltJointPositionDriver_ReceiveFSM");
 
 	iop::Component &cmp = iop::Component::get_instance();
-	PanTiltSpecificationServiceService *spec_srv = static_cast<PanTiltSpecificationServiceService*>(cmp.get_service("PanTiltSpecificationServiceService"));
+	PanTiltSpecificationServiceService *spec_srv = static_cast<PanTiltSpecificationServiceService*>(cmp.get_service("PanTiltSpecificationService"));
 	if (spec_srv != NULL) {
 		std::pair<std::string, std::string> joint_names = spec_srv->pPanTiltSpecificationService_ReceiveFSM->getJointNames();
 		p_joint1_name = joint_names.first;
 		p_joint2_name = joint_names.second;
 	} else {
-		throw std::runtime_error("[PanTiltJointPositionDriver] no PanTiltSpecificationServiceService in configuration found! Please include its plugin first (in the list)!");
+		throw std::runtime_error("[PanTiltJointPositionDriver] no PanTiltSpecificationService in configuration found! Please include its plugin first (in the list)!");
 	}
 
 	iop::Config cfg("~PanTiltJointPositionDriver");

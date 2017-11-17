@@ -71,13 +71,13 @@ void PanTiltJointPositionSensor_ReceiveFSM::setupNotifications()
 	registerNotification("Receiving", pEvents_ReceiveFSM->getHandler(), "InternalStateChange_To_Events_ReceiveFSM_Receiving", "PanTiltJointPositionSensor_ReceiveFSM");
 	pEvents_ReceiveFSM->get_event_handler().register_query(QueryPanTiltJointPositions::ID);
 	iop::Component &cmp = iop::Component::get_instance();
-	PanTiltSpecificationServiceService *spec_srv = static_cast<PanTiltSpecificationServiceService*>(cmp.get_service("PanTiltSpecificationServiceService"));
+	PanTiltSpecificationServiceService *spec_srv = static_cast<PanTiltSpecificationServiceService*>(cmp.get_service("PanTiltSpecificationService"));
 	if (spec_srv != NULL) {
 		std::pair<std::string, std::string> joint_names = spec_srv->pPanTiltSpecificationService_ReceiveFSM->getJointNames();
 		p_joint1_name = joint_names.first;
 		p_joint2_name = joint_names.second;
 	} else {
-		throw std::runtime_error("[PanTiltJointPositionSensor] no PanTiltSpecificationServiceService in configuration found! Please include its plugin first (in the list)!");
+		throw std::runtime_error("[PanTiltJointPositionSensor] no PanTiltSpecificationService in configuration found! Please include its plugin first (in the list)!");
 	}
 
 	iop::Config cfg("~PanTiltJointPositionSensor");
