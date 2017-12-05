@@ -22,7 +22,7 @@ along with this program; or you can read the full license at
 
 
 #include "urn_jaus_jss_manipulator_PanTiltSpecificationService/PanTiltSpecificationService_ReceiveFSM.h"
-
+#include <iop_component_fkie/iop_config.h>
 
 
 
@@ -62,6 +62,12 @@ void PanTiltSpecificationService_ReceiveFSM::setupNotifications()
 	registerNotification("Receiving", pEvents_ReceiveFSM->getHandler(), "InternalStateChange_To_Events_ReceiveFSM_Receiving", "PanTiltSpecificationService_ReceiveFSM");
 	p_cfg_reader.readRosConfiguration();
 	p_cfg_reader.p_print_spec();
+	iop::Config cfg("~PanTiltSpecificationService");
+	p_pub_joint1_limits = cfg.advertise<moveit_msgs::JointLimits>("joint1_limits", 1, true);
+	p_pub_joint2_limits = cfg.advertise<moveit_msgs::JointLimits>("joint2_limits", 1, true);
+	std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> limits = p_cfg_reader.getLimits();
+	p_pub_joint1_limits.publish(limits.first);
+	p_pub_joint2_limits.publish(limits.second);
 }
 
 void PanTiltSpecificationService_ReceiveFSM::sendReportPanTiltSpecificationsAction(QueryPanTiltSpecifications msg, Receive::Body::ReceiveRec transportData)
@@ -85,6 +91,15 @@ std::pair<std::string, std::string> PanTiltSpecificationService_ReceiveFSM::getJ
 	return p_cfg_reader.getJointNames();
 }
 
+std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> PanTiltSpecificationService_ReceiveFSM::getLimits()
+{
+	return p_cfg_reader.getLimits();
+}
 
+
+iop::PantiltCfgReader& PanTiltSpecificationService_ReceiveFSM::config()
+{
+	return p_cfg_reader;
+}
 
 };

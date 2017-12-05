@@ -34,10 +34,11 @@ along with this program; or you can read the full license at
 #include "InternalEvents/Receive.h"
 #include "InternalEvents/Send.h"
 
+#include <moveit_msgs/JointLimits.h>
 #include "urn_jaus_jss_core_Transport/Transport_ReceiveFSM.h"
 #include "urn_jaus_jss_core_Events/Events_ReceiveFSM.h"
 #include "urn_jaus_jss_core_AccessControl/AccessControl_ReceiveFSM.h"
-
+#include <iop_pantilt_specification_service_fkie/PanTiltMotionProfileListenerInterface.h>
 
 #include "PanTiltMotionProfileService_ReceiveFSM_sm.h"
 
@@ -62,6 +63,10 @@ public:
 	virtual bool isControllingClient(Receive::Body::ReceiveRec transportData);
 	virtual bool panTiltMotionProfileExists();
 
+	void add_listener(iop::PanTiltMotionProfileListenerInterface *listener);
+	ReportPanTiltMotionProfile get_current_motion_profile() { return p_motion_profile; }
+	void reset_motion_profile();
+
 
 
 	PanTiltMotionProfileService_ReceiveFSMContext *context;
@@ -73,7 +78,21 @@ protected:
 	urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM;
 	urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM* pAccessControl_ReceiveFSM;
 
+	ReportPanTiltMotionProfile p_motion_profile;
+	std::vector<iop::PanTiltMotionProfileListenerInterface*> p_motionp_listener;
+	bool p_has_profile;
+	std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> p_joint_limits_defaults;
+	std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> p_joint_limits_current;
+	ros::Publisher p_pub_joint1_limits;
+	ros::Publisher p_pub_joint2_limits;
+	double joint1_max_speed;
+	double joint1_max_accel;
+	double joint1_max_decel;
+	double joint2_max_speed;
+	double joint2_max_accel;
+	double joint2_max_decel;
 
+	void pNotifyListeners(JausAddress reporter, ReportPanTiltMotionProfile profile);
 };
 
 };

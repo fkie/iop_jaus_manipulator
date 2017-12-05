@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+NOTICE: this configuration is not a running example.
+It contains only all services and their parameter for current package.
+Some functional examples you can find in iop_cfg_sim_stage_fkie package!
+-->
+<launch>
+  <arg name="ns" default="robot"/>
+  <arg name="id_subsystem" default="127"/>
+  <arg name="id_node" default="64"/>
+  <group ns="$(arg ns)">
+    <node name="iop_primitive_pantitl" pkg="iop_component_fkie" type="iop_component">
+        <param name="capability_group" value="iop_bridge"/>
+        <param name="name_node" value="pantilt"/>
+        <param name="iop_address" value="$(arg id_subsystem).$(arg id_node).52"/>
+        <rosparam param="services">
+            [
+            iop_transport_fkie: "Transport",
+            iop_events_fkie: "Events",
+            iop_accesscontrol_fkie: "AccessControl",
+            iop_discovery_fkie: "Discovery",
+            iop_discovery_fkie: "DiscoveryClient",
+            iop_management_fkie: "Management",
+            iop_liveness_fkie: "Liveness",
+            iop_pantilt_specification_service_fkie: "PanTiltSpecificationService",
+            iop_primitive_pantilt_fkie: "PrimitivePanTilt",
+            ]
+        </rosparam>
+        <rosparam subst_value="true">
+          Events:
+            events_timeout: 1
+          AccessControl:
+            access_timeout: 60
+          Discovery:
+            system_id: 2
+            system_type: 10001
+          DiscoveryClient:
+            register_own_services: true
+            enable_ros_interface: false
+            force_component_update_after: 300
+          PanTiltSpecificationService:
+            # the position of the pantilt on the robot [x y z roll pitch yaw]
+            origin: "0 0 0 0 0 0"
+            # the ROS name of the first joint and movement specifications [name (optional: minValue maxValue maxSpeed)]
+            joint1: "joint_name -3.14 3.14 1.57"
+            # the ROS name of the second joint and movement specifications [name (optional: minValue maxValue maxSpeed)]
+            joint2: "joint_name -3.14 3.14 1.57"
+          PrimitivePanTilt:
+            NoParams: 0
+        </rosparam>
+    </node>
+  </group>
+</launch>

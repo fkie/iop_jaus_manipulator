@@ -1,38 +1,30 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(iop_pantilt_joint_position_driver_fkie)
+project(iop_primitive_pantilt_fkie)
 
 # we need C++11 enabled if compile with kinetic
 #set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  iop_management_fkie
-  iop_pantilt_specification_service_fkie
-  moveit_msgs
-  roscpp
-  sensor_msgs
-)
+                iop_management_fkie
+                iop_pantilt_specification_service_fkie
+                moveit_core
+                moveit_ros_planning
+                roscpp
+                sensor_msgs
+                )
 
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
 find_package(Boost REQUIRED COMPONENTS system thread)
-
 
 iop_init(COMPONENT_ID 0)
 
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
-
+###################################
+## catkin specific configuration ##
+###################################
 catkin_package(
-    LIBRARIES ${PROJECT_NAME}
     CATKIN_DEPENDS
         iop_management_fkie
         iop_pantilt_specification_service_fkie
-        moveit_msgs
+        moveit_core
         sensor_msgs
     DEPENDS Boost
 )
@@ -52,59 +44,42 @@ iop_code_generator(
     urn.jaus.jss.core-v1.1/Events.xml
     urn.jaus.jss.core-v1.1/Management.xml
     urn.jaus.jss.core-v1.1/Transport.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltJointPositionDriver.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltJointPositionSensor.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltMotionProfileService.xml
     urn.jaus.jss.manipulator-v2.0/PanTiltSpecificationService.xml
+    urn.jaus.jss.manipulator-v2.0/PrimitivePanTilt.xml
   OWN_IDLS
   OVERRIDES
-    include/urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriver_ReceiveFSM.h
-    include/urn_jaus_jss_manipulator_PanTiltJointPositionSensor/PanTiltJointPositionSensor_ReceiveFSM.h
-    src/urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriver_ReceiveFSM.cpp
-    src/urn_jaus_jss_manipulator_PanTiltJointPositionSensor/PanTiltJointPositionSensor_ReceiveFSM.cpp
+    include/urn_jaus_jss_manipulator_PrimitivePanTilt/PrimitivePanTilt_ReceiveFSM.h
+    src/urn_jaus_jss_manipulator_PrimitivePanTilt/PrimitivePanTilt_ReceiveFSM.cpp
     src/main.cpp
   EXTERN_SERVICES
+    urn_jaus_jss_manipulator_PanTiltSpecificationService
     urn_jaus_jss_core_AccessControl
     urn_jaus_jss_core_Events
     urn_jaus_jss_core_Management
     urn_jaus_jss_core_Transport
-    urn_jaus_jss_manipulator_PanTiltMotionProfileService
-    urn_jaus_jss_manipulator_PanTiltSpecificationService
   GENERATED_SOURCES cppfiles
 )
 
 include_directories(
-    ${catkin_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  ${boost_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}
-            src/PanTiltJointPositionDriverPlugin.cpp
-            src/PanTiltJointPositionSensorPlugin.cpp
+            src/PrimitivePanTiltPlugin.cpp
             ${cppfiles}
 )
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
                       ${catkin_LIBRARIES}
-                      ${IOP_LIBRARIES}
-                      ${Boost_LIBRARIES}
 )
-
-#############
-## Install ##
-#############
 
 install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-install(
-  DIRECTORY ${IOP_INSTALL_INCLUDE_DIRS} DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
-  PATTERN "*.old" EXCLUDE
-  PATTERN "*.gen" EXCLUDE
 )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)

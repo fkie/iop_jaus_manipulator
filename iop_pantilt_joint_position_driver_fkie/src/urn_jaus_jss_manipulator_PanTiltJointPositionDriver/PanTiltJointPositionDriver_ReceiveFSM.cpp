@@ -31,6 +31,7 @@ along with this program; or you can read the full license at
 
 using namespace JTS;
 using namespace urn_jaus_jss_manipulator_PanTiltSpecificationService;
+using namespace urn_jaus_jss_manipulator_PanTiltMotionProfileService;
 
 namespace urn_jaus_jss_manipulator_PanTiltJointPositionDriver
 {
@@ -100,7 +101,7 @@ void PanTiltJointPositionDriver_ReceiveFSM::setupNotifications()
 		p_joint1_name = joint_names.first;
 		p_joint2_name = joint_names.second;
 	} else {
-		throw std::runtime_error("[PanTiltJointPositionDriver] no PanTiltSpecificationService in configuration found! Please include its plugin first (in the list)!");
+		throw std::runtime_error("[PanTiltJointPositionDriver] no PanTiltSpecificationService in configuration found! Please include this plugin first (in the list)!");
 	}
 
 	iop::Config cfg("~PanTiltJointPositionDriver");
@@ -161,6 +162,7 @@ void PanTiltJointPositionDriver_ReceiveFSM::stopMotionAction()
 	/// Insert User Code HERE
 	// how to stop the motion, if we use only the position to command the pantilt?
 	// we try to send the current position... and zero velocity in joint states
+	ROS_DEBUG_NAMED("PanTiltJointPositionDriver", "stopMotionAction");
 	p_joint1_cmd_position = p_joint1_position;
 	p_joint2_cmd_position = p_joint2_position;
 	sensor_msgs::JointState cmd_joint_state;
@@ -191,7 +193,11 @@ void PanTiltJointPositionDriver_ReceiveFSM::stopMotionAction()
 	p_pub_cmd_pos_tilt32.publish(cmd_pos_tilt32);
 }
 
-
+void PanTiltJointPositionDriver_ReceiveFSM::motion_profile_received(JausAddress reporter, urn_jaus_jss_manipulator_PanTiltMotionProfileService::ReportPanTiltMotionProfile profile)
+{
+	// TODO: handle motion profile
+	ROS_DEBUG_NAMED("PanTiltJointPositionDriver", "motion_profile received from %s", reporter.str().c_str());
+}
 
 bool PanTiltJointPositionDriver_ReceiveFSM::isControllingClient(Receive::Body::ReceiveRec transportData)
 {

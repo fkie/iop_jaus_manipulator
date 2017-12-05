@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>iop_pantilt_joint_position_driver_fkie</name>
+  <name>iop_pantilt_specification_service_fkie</name>
   <version>2.1.0</version>
-  <description>The implementation for Pantilt Joint Position Driver and Sensor service</description>
+  <description>The implementation for Pantilt Specification and Motion profile services</description>
 
   <maintainer email="alexander.tiderko@fkie.fraunhofer.de">Alexander Tiderko</maintainer>
   <license>GPLv2</license>
@@ -10,15 +10,13 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>boost</build_depend>
-  <build_depend>iop_management_fkie</build_depend>
-  <build_depend>iop_pantilt_specification_service_fkie</build_depend>
+  <build_depend>iop_accesscontrol_fkie</build_depend>
   <build_depend>moveit_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <run_depend>boost</run_depend>
   <run_depend>iop_component_fkie</run_depend>
-  <run_depend>iop_management_fkie</run_depend>
-  <run_depend>iop_pantilt_specification_service_fkie</run_depend>
+  <run_depend>iop_accesscontrol_fkie</run_depend>
   <run_depend>moveit_msgs</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>sensor_msgs</run_depend>

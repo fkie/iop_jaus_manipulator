@@ -48,6 +48,8 @@ namespace iop
 		std::string get_joint1() { return p_joint1; }
 		std::string get_joint2() { return p_joint2; }
 		std::pair<std::string, std::string> getJointNames();
+		std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> getLimits();
+		bool is_profile_valid();
 
 		/** Retruns the configuration of the manipulator. */
 		urn_jaus_jss_manipulator_PanTiltSpecificationService::ReportPanTiltSpecifications& getJausMsg();
@@ -61,6 +63,10 @@ namespace iop
 		ReportPanTiltSpecificationsRec p_pantilt_specification;
 		std::string p_joint1;
 		std::string p_joint2;
+		moveit_msgs::JointLimits p_joint1_limits;
+		moveit_msgs::JointLimits p_joint2_limits;
+		bool p_valid_joint1_profile;
+		bool p_valid_joint2_profile;
 	};
 
 }

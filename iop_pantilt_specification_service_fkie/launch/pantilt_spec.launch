@@ -4,16 +4,13 @@
   <arg name="id_subsystem" default="133"/>
   <arg name="id_node" default="64"/>
   <group ns="$(arg ns)">
-      <node name="iop_pantilt_joint_position_driver" pkg="iop_component_fkie" type="iop_component">
+      <node name="iop_pantilt_specification" pkg="iop_component_fkie" type="iop_component">
         <param name="capability_group" value="iop_bridge"/>
         <rosparam param="services">
           [
-            iop_pantilt_joint_position_driver_fkie: "PanTiltJointPositionSensor",
-            iop_pantilt_joint_position_driver_fkie: "PanTiltJointPositionDriver",
             iop_pantilt_specification_service_fkie: "PanTiltMotionProfileService",
             iop_pantilt_specification_service_fkie: "PanTiltSpecificationService",
             iop_discovery_fkie: "DiscoveryClient",
-            iop_management_fkie: "Management",
             iop_accesscontrol_fkie: "AccessControl",
             iop_events_fkie: "Events",
             iop_events_fkie: "EventsClient",
