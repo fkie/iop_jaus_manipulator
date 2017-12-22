@@ -92,6 +92,7 @@ void PrimitivePanTilt_ReceiveFSM::sendReportPanTiltJointEffortAction(QueryPanTil
 	ROS_DEBUG_NAMED("PrimitivePanTilt", "sendReportPanTiltJointEffortAction to %s", sender.str().c_str());
 	p_mutex.lock();
 	ReportPanTiltJointEffort response;
+	// TODO: convert velocity back to effort using max velocity
 	response.getBody()->getPanTiltJointEffortRec()->setJoint1Effort(p_joint1_cmd_effort);
 	response.getBody()->getPanTiltJointEffortRec()->setJoint2Effort(p_joint2_cmd_effort);
 	this->sendJausMessage(response, sender);

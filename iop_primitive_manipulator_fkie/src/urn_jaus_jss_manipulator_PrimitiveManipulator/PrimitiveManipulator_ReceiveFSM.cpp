@@ -126,6 +126,7 @@ void PrimitiveManipulator_ReceiveFSM::setJointEffortAction(SetJointEffort msg, R
 		if (index < p_joint_names.size()) {
 			std::string joint_name = p_joint_names[index];
 			double vel = msg.getBody()->getJointEffortList()->getElement(index)->getJointEffort();
+			// TODO: use max velocity to determine the velocity from effort
 			double vel_ok = (int)(vel*100)/100.;
 			ros_msg.name.push_back(joint_name);
 			ros_msg.velocity.push_back(vel_ok);

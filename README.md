@@ -10,7 +10,6 @@ List of service plugins in this repository:
 [iop_manipulator_specification_service_fkie: ManipulatorSpecificationService](#iop_manipulator_specification_service_fkie-manipulatorspecificationservice)  
 [iop_pantilt_joint_position_driver_fkie: PanTiltJointPositionDriver](#iop_pantilt_joint_position_driver_fkie-pantiltjointpositiondriver)  
 [iop_pantilt_joint_position_driver_fkie: PanTiltJointPositionSensor](#iop_pantilt_joint_position_driver_fkie-pantiltjointpositionSensor)  
-
 [iop_pantilt_specification_service_fkie: PanTiltMotionProfileService](#iop_pantilt_specification_service_fkie-pantiltmotionprofileservice)  
 [iop_pantilt_specification_service_fkie: PanTiltSpecificationService](#iop_pantilt_specification_service_fkie-pantiltspecificationservice)  
 [iop_primitive_endeffector_fkie: PrimitiveEndEffector](#iop_primitive_endeffector_fkie-primitiveendeffector)  
@@ -216,7 +215,7 @@ _joint2_limits (moveit_msgs::JointLimits)_
 
 ## _iop_primitive_endeffector_fkie:_ PrimitiveEndEffector
 
-Control an end effector by velocity commands.
+Control an end effector by velocity commands. Currently we assume the effort is equal to the velocity. TODO: use max velocity to determine the velocity from effort.
 
 #### Parameter:
 
@@ -248,6 +247,7 @@ _joint_states (sensor_msgs::JointState)_
 ## _iop_primitive_manipulator_fkie:_ PrimitiveManipulator
 
 Control a manipulator by velocity commands. The joint names are readed by [ManipulatorSpecificationService](#iop_manipulator_specification_service_fkie-manipulatorspecificationservice).
+Currently we assume the effort is equal to the velocity. TODO: use max velocity to determine the velocity from effort.
 
 #### Parameter:
 

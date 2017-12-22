@@ -132,6 +132,7 @@ void PrimitiveEndEffector_ReceiveFSM::setEndEffectorEffortAction(SetEndEffectorE
 	ros_msg_joints.header.stamp = ros::Time::now();
 	std_msgs::Float64 ros_cmd_vel;
 	double gripper_vel = msg.getBody()->getEndEffectorEffortRec()->getEndEffectorEffort();
+	// TODO: use max velocity to determine the velocity from effort
 	gripper_vel = (int)(gripper_vel*100)/100.;
 	ros_msg_joints.name.push_back(p_gripper_joint);
 	ros_msg_joints.velocity.push_back(gripper_vel);
