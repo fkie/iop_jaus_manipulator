@@ -18,6 +18,7 @@
 #include "urn_jaus_jss_core_AccessControl/AccessControl_ReceiveFSM.h"
 #include "urn_jaus_jss_core_Management/Management_ReceiveFSM.h"
 
+#include <geometry_msgs/TwistStamped.h>
 #include <moveit_msgs/JointLimits.h>
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/JointState.h>
@@ -72,6 +73,7 @@ protected:
 	ros::Publisher p_pub_cmd_vel_tilt;
 	ros::Publisher p_pub_cmd_vel_pan32;
 	ros::Publisher p_pub_cmd_vel_tilt32;
+	ros::Publisher p_pub_cmd_vel_twist;
 };
 
 };

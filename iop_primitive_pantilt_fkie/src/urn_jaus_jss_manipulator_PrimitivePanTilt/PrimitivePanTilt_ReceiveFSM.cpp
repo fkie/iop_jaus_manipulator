@@ -84,6 +84,7 @@ void PrimitivePanTilt_ReceiveFSM::setupNotifications()
 	p_pub_cmd_vel_tilt = cfg.advertise<std_msgs::Float64>("cmd_vel_tilt", 3, false);
 	p_pub_cmd_vel_pan32 = cfg.advertise<std_msgs::Float32>("cmd_vel_pan32", 3, false);
 	p_pub_cmd_vel_tilt32 = cfg.advertise<std_msgs::Float32>("cmd_vel_tilt32", 3, false);
+	p_pub_cmd_vel_twist = cfg.advertise<geometry_msgs::TwistStamped>("cmd_vel_twist", 3, false);
 }
 
 void PrimitivePanTilt_ReceiveFSM::sendReportPanTiltJointEffortAction(QueryPanTiltJointEffort msg, Receive::Body::ReceiveRec transportData)
@@ -126,6 +127,11 @@ void PrimitivePanTilt_ReceiveFSM::setPanTiltJointEffortAction(SetPanTiltJointEff
 	std_msgs::Float32 ros_tilt_msg32;
 	ros_tilt_msg32.data = p_joint2_cmd_effort;
 	p_pub_cmd_vel_tilt32.publish(ros_tilt_msg32);
+	geometry_msgs::TwistStamped ros_twist;
+	ros_twist.header.stamp = ros_msg.header.stamp;
+	ros_twist.twist.angular.y = p_joint2_cmd_effort;
+	ros_twist.twist.angular.z = p_joint1_cmd_effort;
+	p_pub_cmd_vel_twist.publish(ros_twist);
 	p_mutex.unlock();
 }
 
@@ -157,6 +163,11 @@ void PrimitivePanTilt_ReceiveFSM::stopMotionAction()
 	std_msgs::Float32 ros_tilt_msg32;
 	ros_tilt_msg32.data = p_joint2_cmd_effort;
 	p_pub_cmd_vel_tilt32.publish(ros_tilt_msg32);
+	geometry_msgs::TwistStamped ros_twist;
+	ros_twist.header.stamp = ros_msg.header.stamp;
+	ros_twist.twist.angular.y = p_joint2_cmd_effort;
+	ros_twist.twist.angular.z = p_joint1_cmd_effort;
+	p_pub_cmd_vel_twist.publish(ros_twist);
 	p_mutex.unlock();
 }
 
