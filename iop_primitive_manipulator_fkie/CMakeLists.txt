@@ -6,6 +6,7 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
 find_package(catkin REQUIRED COMPONENTS
              iop_component_fkie
+             iop_management_fkie
              iop_manipulator_specification_service_fkie
              roscpp
              sensor_msgs
@@ -22,6 +23,7 @@ iop_init(COMPONENT_ID 0)
 catkin_package(
     CATKIN_DEPENDS
         iop_component_fkie
+        iop_management_fkie
         iop_manipulator_specification_service_fkie
         sensor_msgs
         std_msgs

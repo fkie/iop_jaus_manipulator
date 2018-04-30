@@ -12,6 +12,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>boost</depend>
   <depend>iop_component_fkie</depend>
+  <depend>iop_management_fkie</depend>
   <depend>iop_manipulator_specification_service_fkie</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
