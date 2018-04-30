@@ -8,10 +8,11 @@ project(iop_pantilt_specification_service_fkie)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  iop_accesscontrol_fkie
-  moveit_msgs
-  roscpp
-  sensor_msgs
+             iop_accesscontrol_fkie
+             iop_component_fkie
+             moveit_msgs
+             roscpp
+             sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -33,6 +34,7 @@ catkin_package(
     LIBRARIES ${PROJECT_NAME}
     CATKIN_DEPENDS
         iop_accesscontrol_fkie
+        iop_component_fkie
         moveit_msgs
         sensor_msgs
     DEPENDS Boost
@@ -75,9 +77,9 @@ include_directories(
 )
 
 add_library(${PROJECT_NAME}
-            src/PantiltCfgReader.cpp
             src/PanTiltMotionProfileServicePlugin.cpp
             src/PanTiltSpecificationServicePlugin.cpp
+            src/PantiltCfgReader.cpp
             ${cppfiles}
 )
 

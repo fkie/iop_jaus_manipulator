@@ -5,25 +5,26 @@ project(iop_primitive_endeffector_fkie)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
 find_package(catkin REQUIRED COMPONENTS
-                iop_management_fkie
-                moveit_core
-                moveit_ros_planning
-                roscpp
-                sensor_msgs
-                )
+             iop_component_fkie
+             iop_management_fkie
+             roscpp
+             sensor_msgs
+             std_msgs
+)
 
 find_package(Boost REQUIRED COMPONENTS system thread)
 
-iop_init(COMPONENT_ID 60)
+iop_init(COMPONENT_ID 0)
 
 ###################################
 ## catkin specific configuration ##
 ###################################
 catkin_package(
     CATKIN_DEPENDS
+        iop_component_fkie
         iop_management_fkie
-        moveit_core
         sensor_msgs
+        std_msgs
     DEPENDS Boost
 )
 

@@ -8,13 +8,14 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-    eigen_conversions
-    iop_management_fkie
-    moveit_core
-    moveit_msgs
-    moveit_ros_planning
-    roscpp
-    sensor_msgs
+             eigen_conversions
+             iop_component_fkie
+             iop_events_fkie
+             moveit_core
+             moveit_msgs
+             moveit_ros_planning
+             roscpp
+             sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -37,7 +38,8 @@ catkin_package(
     LIBRARIES ${PROJECT_NAME}
     CATKIN_DEPENDS
         eigen_conversions
-        iop_management_fkie
+        iop_component_fkie
+        iop_events_fkie
         moveit_core
         moveit_msgs
         moveit_ros_planning
@@ -80,8 +82,8 @@ include_directories(
 )
 
 add_library(${PROJECT_NAME}
-            src/ManipulatorUrdfReader.cpp
             src/ManipulatorSpecificationServicePlugin.cpp
+            src/ManipulatorUrdfReader.cpp
             ${cppfiles}
 )
 
