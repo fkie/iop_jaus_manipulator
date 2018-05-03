@@ -11,6 +11,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>boost</depend>
+  <depend>geometry_msgs</depend>
   <depend>iop_component_fkie</depend>
   <depend>iop_management_fkie</depend>
   <depend>iop_pantilt_specification_service_fkie</depend>
@@ -18,6 +19,7 @@
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>tf</depend>
 
   <export>
     <iop_component_fkie plugin="${prefix}/plugin_iop.xml" />

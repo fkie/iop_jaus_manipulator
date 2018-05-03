@@ -8,6 +8,7 @@ project(iop_pantilt_joint_position_driver_fkie)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+             geometry_msgs
              iop_component_fkie
              iop_management_fkie
              iop_pantilt_specification_service_fkie
@@ -15,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
              roscpp
              sensor_msgs
              std_msgs
+             tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -31,12 +33,14 @@ iop_init(COMPONENT_ID 0)
 catkin_package(
     LIBRARIES ${PROJECT_NAME}
     CATKIN_DEPENDS
+        geometry_msgs
         iop_component_fkie
         iop_management_fkie
         iop_pantilt_specification_service_fkie
         moveit_msgs
         sensor_msgs
         std_msgs
+        tf
     DEPENDS Boost
 )
 

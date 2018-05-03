@@ -58,12 +58,18 @@ PanTiltJointPositionDriver_ReceiveFSM::PanTiltJointPositionDriver_ReceiveFSM(urn
 	p_joint2_cmd_position = 0.0;
 	p_joint1_position = 0.0;
 	p_joint2_position = 0.0;
+	p_use_posestamped = false;
+	p_tf_frame_pantilt = "base_link";
+	tfListener = NULL;
 }
 
 
 
 PanTiltJointPositionDriver_ReceiveFSM::~PanTiltJointPositionDriver_ReceiveFSM()
 {
+	if (tfListener != NULL) {
+		delete tfListener;
+	}
 	delete context;
 }
 
@@ -105,6 +111,12 @@ void PanTiltJointPositionDriver_ReceiveFSM::setupNotifications()
 	}
 
 	iop::Config cfg("~PanTiltJointPositionDriver");
+	cfg.param("use_posestamped", p_use_posestamped, p_use_posestamped);
+	if (p_use_posestamped) {
+		tfListener = new tf::TransformListener();
+		cfg.param("tf_frame_pantilt", p_tf_frame_pantilt, p_tf_frame_pantilt);
+		p_sub_pos_stamped = cfg.advertise<geometry_msgs::PoseStamped>("cmd_pos_pantilt", 5, false);
+	}
 	p_pub_cmd_pos_joints = cfg.advertise<sensor_msgs::JointState>("cmd_pos_joints", 1, false);
 	p_pub_cmd_pos_pan = cfg.advertise<std_msgs::Float64>("cmd_pos_pan", 1, false);
 	p_pub_cmd_pos_tilt = cfg.advertise<std_msgs::Float64>("cmd_pos_tilt", 1, false);
@@ -155,6 +167,22 @@ void PanTiltJointPositionDriver_ReceiveFSM::setPanTiltJointEffortsAction(SetPanT
 	std_msgs::Float32 cmd_pos_tilt32;
 	cmd_pos_tilt32.data = p_joint2_cmd_position;
 	p_pub_cmd_pos_tilt32.publish(cmd_pos_tilt32);
+	if (p_use_posestamped) {
+		geometry_msgs::PoseStamped cmd_pos;
+		tf::Quaternion quat = tf::createQuaternionFromRPY(0.0, p_joint2_cmd_position, p_joint1_cmd_position);
+		geometry_msgs::PoseStamped pose;
+		pose.header.frame_id = p_tf_frame_pantilt;
+		pose.header.stamp = ros::Time::now();
+		pose.pose.position.x = 0;
+		pose.pose.position.y = 0;
+		pose.pose.position.z = 0;
+		pose.pose.orientation.x = quat.x();
+		pose.pose.orientation.y = quat.y();
+		pose.pose.orientation.z = quat.z();
+		pose.pose.orientation.w = quat.w();
+
+		p_sub_pos_stamped.publish(cmd_pos);
+	}
 }
 
 void PanTiltJointPositionDriver_ReceiveFSM::stopMotionAction()
@@ -191,6 +219,22 @@ void PanTiltJointPositionDriver_ReceiveFSM::stopMotionAction()
 	std_msgs::Float32 cmd_pos_tilt32;
 	cmd_pos_tilt32.data = p_joint2_position;
 	p_pub_cmd_pos_tilt32.publish(cmd_pos_tilt32);
+	if (p_use_posestamped) {
+		geometry_msgs::PoseStamped cmd_pos;
+		tf::Quaternion quat = tf::createQuaternionFromRPY(0.0, 0.0, 0.0);
+		geometry_msgs::PoseStamped pose;
+		pose.header.frame_id = p_tf_frame_pantilt;
+		pose.header.stamp = ros::Time::now();
+		pose.pose.position.x = 0;
+		pose.pose.position.y = 0;
+		pose.pose.position.z = 0;
+		pose.pose.orientation.x = quat.x();
+		pose.pose.orientation.y = quat.y();
+		pose.pose.orientation.z = quat.z();
+		pose.pose.orientation.w = quat.w();
+
+		p_sub_pos_stamped.publish(cmd_pos);
+	}
 }
 
 void PanTiltJointPositionDriver_ReceiveFSM::motion_profile_received(JausAddress reporter, urn_jaus_jss_manipulator_PanTiltMotionProfileService::ReportPanTiltMotionProfile profile)

@@ -42,6 +42,9 @@ along with this program; or you can read the full license at
 #include <sensor_msgs/JointState.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <tf/transform_datatypes.h>
+#include <tf/transform_listener.h>
 #include <boost/thread/recursive_mutex.hpp>
 
 #include <urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriverService.h>
@@ -86,6 +89,10 @@ protected:
 	ros::Subscriber p_sub_pos_tilt;
 	ros::Subscriber p_sub_pos_pan32;
 	ros::Subscriber p_sub_pos_tilt32;
+	ros::Subscriber p_sub_pos_stamped;
+	bool p_use_posestamped;
+	std::string p_tf_frame_pantilt;
+	tf::TransformListener* tfListener;
 
 	void pUpdatePosition(double pan, double tilt);
 	void pJoinStateCallback(const sensor_msgs::JointState::ConstPtr& joint_state);
@@ -94,6 +101,7 @@ protected:
 	void pPanFloat32Callback(const std_msgs::Float32::ConstPtr& msg);
 	void pTiltFloat32Callback(const std_msgs::Float32::ConstPtr& msg);
 	urn_jaus_jss_manipulator_PanTiltJointPositionDriver::PanTiltJointPositionDriver_ReceiveFSM *pGetPostionDriver();
+	void pPanTiltPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
 };
 
 };

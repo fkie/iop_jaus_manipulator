@@ -54,12 +54,18 @@ PanTiltJointPositionSensor_ReceiveFSM::PanTiltJointPositionSensor_ReceiveFSM(urn
 	p_joint2_name = "";
 	p_joint1_position = 0.0;
 	p_joint2_position = 0.0;
+	p_use_posestamped = false;
+	p_tf_frame_pantilt = "base_link";
+	tfListener = NULL;
 }
 
 
 
 PanTiltJointPositionSensor_ReceiveFSM::~PanTiltJointPositionSensor_ReceiveFSM()
 {
+	if (tfListener != NULL) {
+		delete tfListener;
+	}
 	delete context;
 }
 
@@ -81,6 +87,12 @@ void PanTiltJointPositionSensor_ReceiveFSM::setupNotifications()
 	}
 
 	iop::Config cfg("~PanTiltJointPositionSensor");
+	cfg.param("use_posestamped", p_use_posestamped, p_use_posestamped);
+	if (p_use_posestamped) {
+		tfListener = new tf::TransformListener();
+		cfg.param("tf_frame_pantilt", p_tf_frame_pantilt, p_tf_frame_pantilt);
+		p_sub_pos_stamped = cfg.subscribe<geometry_msgs::PoseStamped>("pos_pantilt", 5, &PanTiltJointPositionSensor_ReceiveFSM::pPanTiltPoseStampedCallback, this);
+	}
 	p_sub_pos_joints = cfg.subscribe<sensor_msgs::JointState>("pos_joints", 1, &PanTiltJointPositionSensor_ReceiveFSM::pJoinStateCallback, this);
 	p_sub_pos_pan = cfg.subscribe<std_msgs::Float64>("pos_pan", 1, &PanTiltJointPositionSensor_ReceiveFSM::pPanFloatCallback, this);
 	p_sub_pos_tilt = cfg.subscribe<std_msgs::Float64>("pos_tilt", 1, &PanTiltJointPositionSensor_ReceiveFSM::pTiltFloatCallback, this);
@@ -181,5 +193,23 @@ PanTiltJointPositionDriver_ReceiveFSM *PanTiltJointPositionSensor_ReceiveFSM::pG
 	return p_position_driver_service;
 }
 
+void PanTiltJointPositionSensor_ReceiveFSM::pPanTiltPoseStampedCallback(const geometry_msgs::PoseStamped::ConstPtr& msg)
+{
+	try {
+		geometry_msgs::PoseStamped pose_in = *msg;
+		tfListener->waitForTransform(p_tf_frame_pantilt, pose_in.header.frame_id, pose_in.header.stamp, ros::Duration(0.3));
+		geometry_msgs::PoseStamped pose_out;
+		tfListener->transformPose(p_tf_frame_pantilt, pose_in, pose_out);
+		double roll, pitch, yaw;
+		tf::Quaternion quat(pose_out.pose.orientation.x, pose_out.pose.orientation.y, pose_out.pose.orientation.z, pose_out.pose.orientation.w);
+		tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
+		if (!isnan(yaw) && !isnan(pitch)) {
+			ROS_INFO_NAMED("PanTiltJointPositionSensor", "new pantilt position from ros pan: %.2f, tilt: %.2f", yaw, pitch);
+			pUpdatePosition(yaw, pitch);
+		}
+	} catch (tf::TransformException &ex) {
+		printf ("Failure %s\n", ex.what()); //Print exception which was caught
+	}
+}
 
 };

@@ -9,6 +9,14 @@ Control the pantil by position commands. To control the pantilt by JointState th
 
 > see [PanTiltSpecificationService](../iop_pantilt_specification_service_fkie/README.md#iop_pantilt_specification_service_fkie-pantiltspecificationservice)
 
+_use_posestamped (bool_ Default: "false")
+
+> Adds support for geometry_msgs::PoseStamped message.
+
+_tf_frame_pantilt (str_ Default: "base_link")
+
+> only if ```use_posestamped``` is true. Sets the given frame_id in ROS message header before send to ROS.
+
 #### Publisher:
 
 _cmd_pos_joints (sensor_msgs::JointState)_
@@ -25,6 +33,10 @@ _cmd_pos_tilt32 (std_msgs::Float32)_
 
 > Tils position.
 
+_cmd_pos_pantilt (geometry_msgs::PoseStamped)_
+
+> only if ```use_posestamped``` is true.
+
 #### Subscriber:
 
 > None
@@ -37,6 +49,14 @@ Reads the pantitl position and reports them by ReportPanTiltJointPositions. To r
 #### Parameter:
 
 > see [PanTiltSpecificationService](../iop_pantilt_specification_service_fkie/README.md#iop_pantilt_specification_service_fkie-pantiltspecificationservice)
+
+_use_posestamped (bool_ Default: "false")
+
+> Adds support for geometry_msgs::PoseStamped message.
+
+_tf_frame_pantilt (str_ Default: "base_link")
+
+> only if ```use_posestamped``` is true. Transfrom the resceived pose into given tf frame before send to IOP.
 
 #### Publisher:
 
@@ -57,4 +77,8 @@ _pos_tilt (std_msgs::Float64)_
 _pos_tilt32 (std_msgs::Float32)_
 
 > Tils position.
+
+_pos_pantilt (geometry_msgs::PoseStamped)_
+
+> only if ```use_posestamped``` is true.
 
