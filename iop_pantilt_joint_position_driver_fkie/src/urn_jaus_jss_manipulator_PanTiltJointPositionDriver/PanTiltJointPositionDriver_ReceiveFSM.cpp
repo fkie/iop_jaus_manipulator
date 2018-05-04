@@ -215,7 +215,7 @@ void PanTiltJointPositionDriver_ReceiveFSM::stopMotionAction()
 	p_pub_cmd_pos_tilt32.publish(cmd_pos_tilt32);
 	if (p_use_posestamped) {
 		geometry_msgs::PoseStamped cmd_pose;
-		tf::Quaternion quat = tf::createQuaternionFromRPY(0.0, 0.0, 0.0);
+		tf::Quaternion quat = tf::createQuaternionFromRPY(0.0, p_joint2_cmd_position, p_joint1_cmd_position);
 		cmd_pose.header.frame_id = p_tf_frame_pantilt;
 		cmd_pose.header.stamp = ros::Time::now();
 		cmd_pose.pose.position.x = 0;
