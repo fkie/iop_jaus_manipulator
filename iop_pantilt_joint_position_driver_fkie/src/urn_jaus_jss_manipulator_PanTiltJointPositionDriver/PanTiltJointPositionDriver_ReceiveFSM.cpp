@@ -59,17 +59,13 @@ PanTiltJointPositionDriver_ReceiveFSM::PanTiltJointPositionDriver_ReceiveFSM(urn
 	p_joint1_position = 0.0;
 	p_joint2_position = 0.0;
 	p_use_posestamped = false;
-	p_tf_frame_pantilt = "base_link";
-	tfListener = NULL;
+	p_tf_frame_pantilt = "";
 }
 
 
 
 PanTiltJointPositionDriver_ReceiveFSM::~PanTiltJointPositionDriver_ReceiveFSM()
 {
-	if (tfListener != NULL) {
-		delete tfListener;
-	}
 	delete context;
 }
 
@@ -113,7 +109,6 @@ void PanTiltJointPositionDriver_ReceiveFSM::setupNotifications()
 	iop::Config cfg("~PanTiltJointPositionDriver");
 	cfg.param("use_posestamped", p_use_posestamped, p_use_posestamped);
 	if (p_use_posestamped) {
-		tfListener = new tf::TransformListener();
 		cfg.param("tf_frame_pantilt", p_tf_frame_pantilt, p_tf_frame_pantilt);
 		p_sub_pos_stamped = cfg.advertise<geometry_msgs::PoseStamped>("cmd_pos_pantilt", 5, false);
 	}

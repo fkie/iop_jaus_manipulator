@@ -55,7 +55,7 @@ PanTiltJointPositionSensor_ReceiveFSM::PanTiltJointPositionSensor_ReceiveFSM(urn
 	p_joint1_position = 0.0;
 	p_joint2_position = 0.0;
 	p_use_posestamped = false;
-	p_tf_frame_pantilt = "base_link";
+	p_tf_frame_pantilt = "";
 	tfListener = NULL;
 }
 
@@ -89,8 +89,10 @@ void PanTiltJointPositionSensor_ReceiveFSM::setupNotifications()
 	iop::Config cfg("~PanTiltJointPositionSensor");
 	cfg.param("use_posestamped", p_use_posestamped, p_use_posestamped);
 	if (p_use_posestamped) {
-		tfListener = new tf::TransformListener();
 		cfg.param("tf_frame_pantilt", p_tf_frame_pantilt, p_tf_frame_pantilt);
+		if (!p_tf_frame_pantilt.empty()) {
+			tfListener = new tf::TransformListener();
+		}
 		p_sub_pos_stamped = cfg.subscribe<geometry_msgs::PoseStamped>("pos_pantilt", 5, &PanTiltJointPositionSensor_ReceiveFSM::pPanTiltPoseStampedCallback, this);
 	}
 	p_sub_pos_joints = cfg.subscribe<sensor_msgs::JointState>("pos_joints", 1, &PanTiltJointPositionSensor_ReceiveFSM::pJoinStateCallback, this);
@@ -197,9 +199,13 @@ void PanTiltJointPositionSensor_ReceiveFSM::pPanTiltPoseStampedCallback(const ge
 {
 	try {
 		geometry_msgs::PoseStamped pose_in = *msg;
-		tfListener->waitForTransform(p_tf_frame_pantilt, pose_in.header.frame_id, pose_in.header.stamp, ros::Duration(0.3));
 		geometry_msgs::PoseStamped pose_out;
-		tfListener->transformPose(p_tf_frame_pantilt, pose_in, pose_out);
+		if (tfListener != NULL) {
+			tfListener->waitForTransform(p_tf_frame_pantilt, pose_in.header.frame_id, pose_in.header.stamp, ros::Duration(0.3));
+			tfListener->transformPose(p_tf_frame_pantilt, pose_in, pose_out);
+		} else {
+			pose_out = pose_in;
+		}
 		double roll, pitch, yaw;
 		tf::Quaternion quat(pose_out.pose.orientation.x, pose_out.pose.orientation.y, pose_out.pose.orientation.z, pose_out.pose.orientation.w);
 		tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);

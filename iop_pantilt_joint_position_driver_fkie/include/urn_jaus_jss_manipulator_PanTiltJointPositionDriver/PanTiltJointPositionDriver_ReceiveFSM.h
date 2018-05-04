@@ -101,7 +101,6 @@ protected:
 	ros::Publisher p_sub_pos_stamped;
 	bool p_use_posestamped;
 	std::string p_tf_frame_pantilt;
-	tf::TransformListener* tfListener;
 
 	void pUpdatePosition(double pan, double tilt);
 	void pJoinStateCallback(const sensor_msgs::JointState::ConstPtr& joint_state);

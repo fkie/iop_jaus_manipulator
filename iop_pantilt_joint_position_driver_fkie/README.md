@@ -13,7 +13,7 @@ _use_posestamped (bool_ Default: "false")
 
 > Adds support for geometry_msgs::PoseStamped message.
 
-_tf_frame_pantilt (str_ Default: "base_link")
+_tf_frame_pantilt (str_ Default: "")
 
 > only if ```use_posestamped``` is true. Sets the given frame_id in ROS message header before send to ROS.
 
@@ -54,7 +54,7 @@ _use_posestamped (bool_ Default: "false")
 
 > Adds support for geometry_msgs::PoseStamped message.
 
-_tf_frame_pantilt (str_ Default: "base_link")
+_tf_frame_pantilt (str_ Default: "")
 
 > only if ```use_posestamped``` is true. Transfrom the resceived pose into given tf frame before send to IOP.
 
