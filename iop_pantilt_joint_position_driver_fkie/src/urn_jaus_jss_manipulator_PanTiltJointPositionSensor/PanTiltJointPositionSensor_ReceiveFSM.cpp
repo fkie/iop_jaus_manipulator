@@ -210,7 +210,7 @@ void PanTiltJointPositionSensor_ReceiveFSM::pPanTiltPoseStampedCallback(const ge
 		tf::Quaternion quat(pose_out.pose.orientation.x, pose_out.pose.orientation.y, pose_out.pose.orientation.z, pose_out.pose.orientation.w);
 		tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
 		if (!isnan(yaw) && !isnan(pitch)) {
-			ROS_INFO_NAMED("PanTiltJointPositionSensor", "new pantilt position from ros pan: %.2f, tilt: %.2f", yaw, pitch);
+			ROS_DEBUG_NAMED("PanTiltJointPositionSensor", "new pantilt position from ros pan: %.2f, tilt: %.2f", yaw, pitch);
 			pUpdatePosition(yaw, pitch);
 		}
 	} catch (tf::TransformException &ex) {

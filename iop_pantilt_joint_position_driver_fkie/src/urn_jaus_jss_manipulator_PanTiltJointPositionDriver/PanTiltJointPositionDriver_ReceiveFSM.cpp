@@ -163,20 +163,19 @@ void PanTiltJointPositionDriver_ReceiveFSM::setPanTiltJointEffortsAction(SetPanT
 	cmd_pos_tilt32.data = p_joint2_cmd_position;
 	p_pub_cmd_pos_tilt32.publish(cmd_pos_tilt32);
 	if (p_use_posestamped) {
-		geometry_msgs::PoseStamped cmd_pos;
+		geometry_msgs::PoseStamped cmd_pose;
 		tf::Quaternion quat = tf::createQuaternionFromRPY(0.0, p_joint2_cmd_position, p_joint1_cmd_position);
-		geometry_msgs::PoseStamped pose;
-		pose.header.frame_id = p_tf_frame_pantilt;
-		pose.header.stamp = ros::Time::now();
-		pose.pose.position.x = 0;
-		pose.pose.position.y = 0;
-		pose.pose.position.z = 0;
-		pose.pose.orientation.x = quat.x();
-		pose.pose.orientation.y = quat.y();
-		pose.pose.orientation.z = quat.z();
-		pose.pose.orientation.w = quat.w();
+		cmd_pose.header.frame_id = p_tf_frame_pantilt;
+		cmd_pose.header.stamp = ros::Time::now();
+		cmd_pose.pose.position.x = 0;
+		cmd_pose.pose.position.y = 0;
+		cmd_pose.pose.position.z = 0;
+		cmd_pose.pose.orientation.x = quat.x();
+		cmd_pose.pose.orientation.y = quat.y();
+		cmd_pose.pose.orientation.z = quat.z();
+		cmd_pose.pose.orientation.w = quat.w();
 
-		p_sub_pos_stamped.publish(cmd_pos);
+		p_sub_pos_stamped.publish(cmd_pose);
 	}
 }
 
@@ -215,20 +214,19 @@ void PanTiltJointPositionDriver_ReceiveFSM::stopMotionAction()
 	cmd_pos_tilt32.data = p_joint2_position;
 	p_pub_cmd_pos_tilt32.publish(cmd_pos_tilt32);
 	if (p_use_posestamped) {
-		geometry_msgs::PoseStamped cmd_pos;
+		geometry_msgs::PoseStamped cmd_pose;
 		tf::Quaternion quat = tf::createQuaternionFromRPY(0.0, 0.0, 0.0);
-		geometry_msgs::PoseStamped pose;
-		pose.header.frame_id = p_tf_frame_pantilt;
-		pose.header.stamp = ros::Time::now();
-		pose.pose.position.x = 0;
-		pose.pose.position.y = 0;
-		pose.pose.position.z = 0;
-		pose.pose.orientation.x = quat.x();
-		pose.pose.orientation.y = quat.y();
-		pose.pose.orientation.z = quat.z();
-		pose.pose.orientation.w = quat.w();
+		cmd_pose.header.frame_id = p_tf_frame_pantilt;
+		cmd_pose.header.stamp = ros::Time::now();
+		cmd_pose.pose.position.x = 0;
+		cmd_pose.pose.position.y = 0;
+		cmd_pose.pose.position.z = 0;
+		cmd_pose.pose.orientation.x = quat.x();
+		cmd_pose.pose.orientation.y = quat.y();
+		cmd_pose.pose.orientation.z = quat.z();
+		cmd_pose.pose.orientation.w = quat.w();
 
-		p_sub_pos_stamped.publish(cmd_pos);
+		p_sub_pos_stamped.publish(cmd_pose);
 	}
 }
 
