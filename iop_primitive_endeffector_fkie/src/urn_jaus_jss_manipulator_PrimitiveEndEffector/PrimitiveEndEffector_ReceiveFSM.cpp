@@ -63,6 +63,7 @@ void PrimitiveEndEffector_ReceiveFSM::setupNotifications()
 	registerNotification("Receiving_Ready_Controlled", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving_Ready_Controlled", "PrimitiveEndEffector_ReceiveFSM");
 	registerNotification("Receiving_Ready", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving_Ready", "PrimitiveEndEffector_ReceiveFSM");
 	registerNotification("Receiving", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving", "PrimitiveEndEffector_ReceiveFSM");
+	pEvents_ReceiveFSM->get_event_handler().register_query(QueryEndEffectorEffort::ID);
 	iop::Config cfg("~PrimitiveEndEffector");
 	std::string manipulator_id;
 	cfg.param("gripper_joint", p_gripper_joint, p_gripper_joint);
@@ -144,7 +145,7 @@ void PrimitiveEndEffector_ReceiveFSM::setEndEffectorEffortAction(SetEndEffectorE
 
 void PrimitiveEndEffector_ReceiveFSM::stopMotionAction()
 {
-	ROS_DEBUG_NAMED("PrimitiveEndEffector", "stopMotionAction");
+	ROS_DEBUG_NAMED("PrimitiveEndEffector", "stop endeffectorMotionAction");
 	p_mutex.lock();
 	sensor_msgs::JointState ros_msg_joints;
 	ros_msg_joints.header.stamp = ros::Time::now();
@@ -201,6 +202,14 @@ void PrimitiveEndEffector_ReceiveFSM::pJoinStateCallback(const sensor_msgs::Join
 			p_joint_velocities[it_ids->first] = 0.;
 		}
 	}
+	ReportEndEffectorEffort report;
+	std::map<std::string, float>::iterator it_ps;
+	for (unsigned int index = 0; index < p_joint_names.size(); index++) {
+		report.getBody()->getEndEffectorEffortRec()->setEndEffectorEffort(p_joint_velocities[p_joint_names[index]]);
+	}
+	p_joint_effort_report = report;
+	pEvents_ReceiveFSM->get_event_handler().set_report(QueryEndEffectorEffort::ID, &p_joint_effort_report);
+
 //  printf("[ManipulatorJointPositionSensor] positions:\n");
 //  std::map<std::string, float>::iterator it_ps;
 //  for (unsigned int index = 0; index < p_joint_names.size(); index++) {

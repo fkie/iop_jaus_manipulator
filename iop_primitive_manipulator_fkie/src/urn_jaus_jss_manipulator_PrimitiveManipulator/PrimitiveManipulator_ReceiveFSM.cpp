@@ -63,7 +63,7 @@ void PrimitiveManipulator_ReceiveFSM::setupNotifications()
 	registerNotification("Receiving_Ready_Controlled", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving_Ready_Controlled", "PrimitiveManipulator_ReceiveFSM");
 	registerNotification("Receiving_Ready", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving_Ready", "PrimitiveManipulator_ReceiveFSM");
 	registerNotification("Receiving", pManagement_ReceiveFSM->getHandler(), "InternalStateChange_To_Management_ReceiveFSM_Receiving", "PrimitiveManipulator_ReceiveFSM");
-
+	pEvents_ReceiveFSM->get_event_handler().register_query(QueryJointEffort::ID);
 	iop::Component &cmp = iop::Component::get_instance();
 	ManipulatorSpecificationServiceService *spec_srv = static_cast<ManipulatorSpecificationServiceService*>(cmp.get_service("ManipulatorSpecificationService"));
 	if (spec_srv != NULL) {
@@ -202,6 +202,15 @@ void PrimitiveManipulator_ReceiveFSM::pJoinStateCallback(const sensor_msgs::Join
 			p_joint_velocities[it_ids->first] = 0.;
 		}
 	}
+	ReportJointEffort report;
+	std::map<std::string, float>::iterator it_ps;
+	for (unsigned int index = 0; index < p_joint_names.size(); index++) {
+		ReportJointEffort::Body::JointEffortList::JointEffortRec joint_effort;
+		joint_effort.setJointEffort(p_joint_velocities[p_joint_names[index]]);
+		report.getBody()->getJointEffortList()->addElement(joint_effort);
+	}
+	p_joint_effort_report = report;
+	pEvents_ReceiveFSM->get_event_handler().set_report(QueryJointEffort::ID, &p_joint_effort_report);
 	//  printf("[ManipulatorJointPositionSensor] positions:\n");
 	//  std::map<std::string, float>::iterator it_ps;
 	//  for (unsigned int index = 0; index < p_joint_names.size(); index++) {

@@ -57,6 +57,7 @@ protected:
 	urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM* pAccessControl_ReceiveFSM;
 	urn_jaus_jss_core_Management::Management_ReceiveFSM* pManagement_ReceiveFSM;
 
+	ReportJointEffort p_joint_effort_report;
 	boost::recursive_mutex p_mutex;
 	std::vector<std::string> p_joint_names;
 	std::map<std::string, float> p_joint_positions;

@@ -58,6 +58,7 @@ protected:
 	urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM* pAccessControl_ReceiveFSM;
 	urn_jaus_jss_core_Management::Management_ReceiveFSM* pManagement_ReceiveFSM;
 
+	ReportEndEffectorEffort p_joint_effort_report;
 	boost::recursive_mutex p_mutex;
 	JausAddress p_manipulator_id;
 	std::string p_gripper_joint;
