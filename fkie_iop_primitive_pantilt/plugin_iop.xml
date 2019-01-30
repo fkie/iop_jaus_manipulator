@@ -1,0 +1,11 @@
+<library path="libfkie_iop_primitive_pantilt">
+  <class name="PrimitivePanTilt" type="iop::PrimitivePanTiltPlugin" base_class_type="iop::PluginInterface">
+    <description>
+      PrimitivePanTilt Service Plugin
+    </description>
+    <iop_service name="PrimitivePanTilt" id="urn:jaus:jss:manipulator:PrimitivePanTilt" version="2.0">
+      <inherits_from id="urn:jaus:jss:core:Management" min_version="1.1"/>
+      <depend id="urn:jaus:jss:manipulator:PanTiltSpecificationService"/>
+    </iop_service>
+  </class>
+</library>

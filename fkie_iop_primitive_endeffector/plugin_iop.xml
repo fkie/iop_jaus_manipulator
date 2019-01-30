@@ -1,0 +1,10 @@
+<library path="libfkie_iop_primitive_endeffector">
+  <class name="PrimitiveEndEffector" type="iop::PrimitiveEndEffectorPlugin" base_class_type="iop::PluginInterface">
+    <description>
+      PrimitiveEndEffector Service Plugin
+    </description>
+    <iop_service name="PrimitiveEndEffector" id="urn:jaus:jss:manipulator:PrimitiveEndEffector" version="2.0">
+      <inherits_from id="urn:jaus:jss:core:Management" min_version="1.1"/>
+    </iop_service>
+  </class>
+</library>

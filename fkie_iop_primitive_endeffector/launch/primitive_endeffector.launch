@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+NOTICE: this configuration is not a running example.
+It contains only all services and their parameter for current package.
+Some functional examples you can find in fkie_iop_cfg_sim_stage package!
+-->
+<launch>
+  <arg name="ns" default="robot"/>
+  <arg name="id_subsystem" default="127"/>
+  <arg name="id_node" default="64"/>
+  <group ns="$(arg ns)">
+    <node name="iop_primitive_manipulator_with_effector" pkg="fkie_iop_component" type="iop_component">
+        <param name="capability_group" value="iop_bridge"/>
+        <param name="name_node" value="platform"/>
+        <param name="iop_address" value="$(arg id_subsystem).$(arg id_node).49"/>
+        <rosparam param="services">
+            [
+            fkie_iop_transport: "Transport",
+            fkie_iop_events: "Events",
+            fkie_iop_accesscontrol: "AccessControl",
+            fkie_iop_discovery: "Discovery",
+            fkie_iop_discovery: "DiscoveryClient",
+            fkie_iop_management: "Management",
+            fkie_iop_liveness: "Liveness",
+            fkie_iop_manipulator_specification_service: "ManipulatorSpecificationService",
+            fkie_iop_primitive_manipulator: "PrimitiveManipulator",
+            fkie_iop_primitive_endeffector: "PrimitiveEndEffector",
+            ]
+        </rosparam>
+        <rosparam subst_value="true">
+          Events:
+            events_timeout: 1
+          AccessControl:
+            access_timeout: 60
+          Discovery:
+            system_id: 2
+            system_type: 10001
+          DiscoveryClient:
+            register_own_services: true
+            enable_ros_interface: false
+            force_component_update_after: 300
+          ManipulatorSpecificationService:
+            manipulator_base_link: manipulator_base_link
+            manipulator_tip_link: gripperTurn_link
+            robot_description: $(arg ns)/robot_description
+          PrimitiveManipulator:
+            NoParams: 0
+          PrimitiveEndEffector:
+            gripper_joint: gripperWidth_joint
+            manipulator_id: $(arg id_subsystem).$(arg id_node).49
+        </rosparam>
+    </node>
+  </group>
+</launch>
