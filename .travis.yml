@@ -8,7 +8,6 @@ env:
 #    - CATKIN_CONFIG='--no-install'
 #    - VERBOSE_OUTPUT=true
   matrix:
-    - ROS_DISTRO="indigo" ROS_REPO="ros"  UPSTREAM_WORKSPACE=file
     - ROS_DISTRO="kinetic" ROS_REPO="ros"  UPSTREAM_WORKSPACE=file
     - ROS_DISTRO="melodic" ROS_REPO="ros-shadow-fixed"  UPSTREAM_WORKSPACE=file
     - ROS_DISTRO="melodic" ROS_REPO="ros"  UPSTREAM_WORKSPACE=file
