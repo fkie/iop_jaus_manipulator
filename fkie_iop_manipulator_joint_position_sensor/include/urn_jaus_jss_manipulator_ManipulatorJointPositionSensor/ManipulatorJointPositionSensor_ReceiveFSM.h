@@ -50,6 +50,7 @@ protected:
 	urn_jaus_jss_core_Transport::Transport_ReceiveFSM* pTransport_ReceiveFSM;
 	urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM;
 
+	ReportJointPositions p_report_joint_positions;
 	boost::recursive_mutex p_mutex;
 	std::vector<std::string> p_joint_names;
 	std::map<std::string, float> p_joint_positions;

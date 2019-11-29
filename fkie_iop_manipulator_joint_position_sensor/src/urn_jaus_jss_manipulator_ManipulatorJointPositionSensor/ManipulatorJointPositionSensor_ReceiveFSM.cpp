@@ -55,6 +55,7 @@ void ManipulatorJointPositionSensor_ReceiveFSM::setupNotifications()
 	}
 	iop::Config cfg("~PrimitiveManipulator");
 	p_sub_jointstates = cfg.subscribe<sensor_msgs::JointState>("joint_states", 1, &ManipulatorJointPositionSensor_ReceiveFSM::pJoinStateCallback, this);
+	pEvents_ReceiveFSM->get_event_handler().register_query(QueryJointPositions::ID);
 }
 
 void ManipulatorJointPositionSensor_ReceiveFSM::sendQueryJointPositionsAction(QueryJointPositions msg, Receive::Body::ReceiveRec transportData)
@@ -62,17 +63,8 @@ void ManipulatorJointPositionSensor_ReceiveFSM::sendQueryJointPositionsAction(Qu
 	/// Insert User Code HERE
 	JausAddress sender = transportData.getAddress();
 	ROS_DEBUG_NAMED("ManipulatorJointPositionSensor", "sendReportJointPositionAction to %s", sender.str().c_str());
-
 	p_mutex.lock();
-	ReportJointPositions response;
-	std::map<std::string, float>::iterator it_ps;
-	for (unsigned int index = 0; index < p_joint_names.size(); index++) {
-		ReportJointPositions::Body::JointPositionList::JointPositionRec joint_position;
-		// TODO: read from config the type of the joint and use radians or meters
-		joint_position.getJointPosition()->setRadianAsUnsignedIntegerAt0(p_joint_positions[p_joint_names[index]]);
-		response.getBody()->getJointPositionList()->addElement(joint_position);
-	}
-	this->sendJausMessage(response, sender);
+	this->sendJausMessage(p_report_joint_positions, sender);
 	p_mutex.unlock();
 }
 
@@ -105,6 +97,18 @@ void ManipulatorJointPositionSensor_ReceiveFSM::pJoinStateCallback(const sensor_
 //  for (unsigned int index = 0; index < p_joint_names.size(); index++) {
 //      printf("  %s: %f\n",  p_joint_names[index].c_str(), p_joint_positions[p_joint_names[index]]);
 //  }
+    // delete all positions first
+	while (p_report_joint_positions.getBody()->getJointPositionList()->getNumberOfElements() > 0) {
+		p_report_joint_positions.getBody()->getJointPositionList()->deleteLastElement();
+	}
+	std::map<std::string, float>::iterator it_ps;
+	for (unsigned int index = 0; index < p_joint_names.size(); index++) {
+		ReportJointPositions::Body::JointPositionList::JointPositionRec joint_position;
+		// TODO: read from config the type of the joint and use radians or meters
+		joint_position.getJointPosition()->setRadianAsUnsignedIntegerAt0(p_joint_positions[p_joint_names[index]]);
+		p_report_joint_positions.getBody()->getJointPositionList()->addElement(joint_position);
+	}
+	pEvents_ReceiveFSM->get_event_handler().set_report(QueryJointPositions::ID, &p_report_joint_positions);
 	p_mutex.unlock();
 }
 
