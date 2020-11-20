@@ -2,8 +2,6 @@ This repository is part of [ROS/IOP Bridge](https://github.com/fkie/iop_core/blo
 
 This code is currently highly experimental!
 
-Build status of latest version:
-
 [![Build Status](https://travis-ci.org/fkie/iop_jaus_manipulator.svg?branch=master)](https://travis-ci.org/fkie/iop_jaus_manipulator)
 
 ### List of service plugins in this repository:
