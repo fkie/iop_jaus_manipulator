@@ -25,6 +25,7 @@ catkin_package(
         fkie_iop_component
         fkie_iop_management
         fkie_iop_manipulator_specification_service
+        roscpp
         sensor_msgs
         std_msgs
     DEPENDS Boost

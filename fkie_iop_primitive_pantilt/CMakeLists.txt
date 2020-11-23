@@ -5,10 +5,10 @@ project(fkie_iop_primitive_pantilt)
 #set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
 find_package(catkin REQUIRED COMPONENTS
-             geometry_msgs
              fkie_iop_component
              fkie_iop_management
              fkie_iop_pantilt_specification_service
+             geometry_msgs
              moveit_msgs
              roscpp
              sensor_msgs
@@ -24,11 +24,12 @@ iop_init(COMPONENT_ID 0)
 ###################################
 catkin_package(
     CATKIN_DEPENDS
-        geometry_msgs
         fkie_iop_component
         fkie_iop_management
         fkie_iop_pantilt_specification_service
+        geometry_msgs
         moveit_msgs
+        roscpp
         sensor_msgs
         std_msgs
     DEPENDS Boost

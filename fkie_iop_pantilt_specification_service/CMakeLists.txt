@@ -36,6 +36,7 @@ catkin_package(
         fkie_iop_accesscontrol
         fkie_iop_component
         moveit_msgs
+        roscpp
         sensor_msgs
     DEPENDS Boost
 )

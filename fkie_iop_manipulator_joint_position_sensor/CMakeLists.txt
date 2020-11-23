@@ -28,6 +28,7 @@ catkin_package(
         fkie_iop_manipulator_specification_service
         moveit_core
         moveit_ros_planning
+        roscpp
         sensor_msgs
     DEPENDS Boost
 )

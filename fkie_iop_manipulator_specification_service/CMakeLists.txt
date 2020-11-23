@@ -43,6 +43,7 @@ catkin_package(
         moveit_core
         moveit_msgs
         moveit_ros_planning
+        roscpp
         sensor_msgs
     DEPENDS Boost
 )
