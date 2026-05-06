@@ -1,9 +1,9 @@
 - git:
     local-name: iop_msgs
     uri: https://github.com/fkie/iop_msgs
-    version: noetic
+    version: ros2
 
 - git:
     local-name: iop_core
     uri: https://github.com/fkie/iop_core
-    version: noetic
+    version: ros2

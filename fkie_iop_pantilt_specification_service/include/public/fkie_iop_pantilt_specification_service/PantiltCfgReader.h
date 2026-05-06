@@ -25,9 +25,9 @@ along with this program; or you can read the full license at
 #define PANTILT_CFG_READER_H
 
 #include <string>
-#include <moveit_msgs/JointLimits.h>
-#include <ros/ros.h>
-#include <sensor_msgs/JointState.h>
+#include <rclcpp/rclcpp.hpp>
+#include <moveit_msgs/msg/joint_limits.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
 #include "urn_jaus_jss_manipulator_PanTiltSpecificationService/Messages/MessageSet.h"
 
 
@@ -39,7 +39,7 @@ namespace iop
 	class PantiltCfgReader
 	{
 	public:
-		PantiltCfgReader();
+		PantiltCfgReader(std::shared_ptr<iop::Component> cmp);
 		virtual ~PantiltCfgReader();
 		/** Reads the parameter from ROS parameter server, parses there stored
 		* robot_description and generates the JAUS specification for manipulator. */
@@ -48,7 +48,7 @@ namespace iop
 		std::string get_joint1() { return p_joint1; }
 		std::string get_joint2() { return p_joint2; }
 		std::pair<std::string, std::string> getJointNames();
-		std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> getLimits();
+		std::pair<moveit_msgs::msg::JointLimits, moveit_msgs::msg::JointLimits> getLimits();
 		bool is_profile_valid();
 
 		/** Retruns the configuration of the manipulator. */
@@ -58,13 +58,15 @@ namespace iop
 		void p_print_spec();
 
 	protected:
+		std::shared_ptr<iop::Component> cmp;
+		rclcpp::Logger logger;
 		std::map<std::string, float> p_joint_positions;
 		urn_jaus_jss_manipulator_PanTiltSpecificationService::ReportPanTiltSpecifications p_jaus_msg;
 		ReportPanTiltSpecificationsRec p_pantilt_specification;
 		std::string p_joint1;
 		std::string p_joint2;
-		moveit_msgs::JointLimits p_joint1_limits;
-		moveit_msgs::JointLimits p_joint2_limits;
+		moveit_msgs::msg::JointLimits p_joint1_limits;
+		moveit_msgs::msg::JointLimits p_joint2_limits;
 		bool p_valid_joint1_profile;
 		bool p_valid_joint2_profile;
 	};

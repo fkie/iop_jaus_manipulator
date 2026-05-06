@@ -1,8 +1,8 @@
-This repository is part of [ROS/IOP Bridge](https://github.com/fkie/iop_core/blob/noetic/README.md).
+This repository is part of [ROS/IOP Bridge](https://github.com/fkie/iop_core/blob/ros2/README.md).
 
 This code is currently highly experimental!
 
-[![noetic](https://github.com/fkie/iop_jaus_manipulator/actions/workflows/main.yaml/badge.svg)](https://github.com/fkie/iop_jaus_manipulator/actions/workflows/main.yaml)
+[![ros2](https://github.com/fkie/iop_jaus_manipulator/actions/workflows/main.yaml/badge.svg)](https://github.com/fkie/iop_jaus_manipulator/actions/workflows/main.yaml)
 
 ### List of service plugins in this repository:
 

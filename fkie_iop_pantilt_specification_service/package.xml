@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>fkie_iop_pantilt_specification_service</name>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
   <description>Configuration for Pantilt using Pantilt Specification and Motion profile services</description>
 
   <author>Alexander Tiderko</author>
@@ -9,16 +9,18 @@
   <license>GPLv2</license>
   <url type="website">https://github.com/fkie/iop_jaus_manipulator</url>
 
-  <buildtool_depend>catkin</buildtool_depend>
   <depend>boost</depend>
   <depend>fkie_iop_accesscontrol</depend>
   <depend>fkie_iop_component</depend>
   <depend>moveit_msgs</depend>
-  <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
+  <depend>tf2</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
 
   <export>
-    <fkie_iop_component plugin="${prefix}/plugin_iop.xml" />
+    <build_type>ament_cmake</build_type>
   </export>
 
 </package>

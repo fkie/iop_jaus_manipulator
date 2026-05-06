@@ -35,11 +35,11 @@ _joint2_max_decel (double_, Default: 1.5)
 
 #### Publisher:
 
-_joint1_limits (moveit_msgs::JointLimits)_
+_joint1_limits (moveit_msgs::msg::JointLimits)_
 
 > Publishes the limits for first joint.
 
-_joint2_limits (moveit_msgs::JointLimits)_
+_joint2_limits (moveit_msgs::msg::JointLimits)_
 
 > Publishes the limits for second joint.
 
@@ -58,33 +58,21 @@ _origin (str_, Default: "0 0 0 0 0 0")
 
 > The position of the pantilt on the robot [x y z roll pitch yaw]
 
-_joint1 (double_, Default: 1.5)
+_joint1 (str_, Default: "joint1 -3.14 3.14 1.57")
 
-> Maximal acceleration of first joint.
+> Description of the joint1: name, minimal value, maximal value, maximal speed.
 
-_joint1_max_decel (double_, Default: 1.5)
+_joint2 (str_, Default: "joint2 -3.14 3.14 1.57")
 
-> Maximal deceleration of first joint.
-
-_joint2_max_speed (double_, Default: 1.5)
-
-> Maximal speed of second joint.
-
-_joint2_max_accel (double_, Default: 1.5)
-
-> Maximal acceleration of second joint.
-
-_joint2_max_decel (double_, Default: 1.5)
-
-> Maximal deceleration of second joint.
+> Description of the joint2: name, minimal value, maximal value, maximal speed.
 
 #### Publisher:
 
-_joint1_limits (moveit_msgs::JointLimits)_
+_joint1_limits (moveit_msgs::msg::JointLimits)_
 
 > Publishes the limits for first joint.
 
-_joint2_limits (moveit_msgs::JointLimits)_
+_joint2_limits (moveit_msgs::msg::JointLimits)_
 
 > Publishes the limits for second joint.
 

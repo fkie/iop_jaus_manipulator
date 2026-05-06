@@ -20,7 +20,6 @@ along with this program; or you can read the full license at
 
 /** \author Alexander Tiderko */
 
-
 #ifndef PANTILTMOTIONPROFILESERVICE_RECEIVEFSM_H
 #define PANTILTMOTIONPROFILESERVICE_RECEIVEFSM_H
 
@@ -34,66 +33,67 @@ along with this program; or you can read the full license at
 #include "InternalEvents/Receive.h"
 #include "InternalEvents/Send.h"
 
-#include <moveit_msgs/JointLimits.h>
+#include <moveit_msgs/msg/joint_limits.hpp>
 #include "urn_jaus_jss_core_Transport/Transport_ReceiveFSM.h"
 #include "urn_jaus_jss_core_Events/Events_ReceiveFSM.h"
 #include "urn_jaus_jss_core_AccessControl/AccessControl_ReceiveFSM.h"
 #include <fkie_iop_pantilt_specification_service/PanTiltMotionProfileListenerInterface.h>
 
 #include "PanTiltMotionProfileService_ReceiveFSM_sm.h"
+#include <rclcpp/rclcpp.hpp>
+#include <fkie_iop_component/iop_component.hpp>
 
 namespace urn_jaus_jss_manipulator_PanTiltMotionProfileService
 {
 
-class DllExport PanTiltMotionProfileService_ReceiveFSM : public JTS::StateMachine
-{
-public:
-	PanTiltMotionProfileService_ReceiveFSM(urn_jaus_jss_core_Transport::Transport_ReceiveFSM* pTransport_ReceiveFSM, urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM, urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM* pAccessControl_ReceiveFSM);
-	virtual ~PanTiltMotionProfileService_ReceiveFSM();
+	class DllExport PanTiltMotionProfileService_ReceiveFSM : public JTS::StateMachine
+	{
+	public:
+		PanTiltMotionProfileService_ReceiveFSM(std::shared_ptr<iop::Component> cmp, urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM *pAccessControl_ReceiveFSM, urn_jaus_jss_core_Events::Events_ReceiveFSM *pEvents_ReceiveFSM, urn_jaus_jss_core_Transport::Transport_ReceiveFSM *pTransport_ReceiveFSM);
+		virtual ~PanTiltMotionProfileService_ReceiveFSM();
+		/// Handle notifications on parent state changes
+		virtual void setupNotifications();
+		virtual void setupIopConfiguration();
 
-	/// Handle notifications on parent state changes
-	virtual void setupNotifications();
+		/// Action Methods
+		virtual void sendReportPanTiltMotionProfileAction(QueryPanTiltMotionProfile msg, Receive::Body::ReceiveRec transportData);
+		virtual void setPanTiltMotionProfileAction(SetPanTiltMotionProfile msg, Receive::Body::ReceiveRec transportData);
 
-	/// Action Methods
-	virtual void sendReportPanTiltMotionProfileAction(QueryPanTiltMotionProfile msg, Receive::Body::ReceiveRec transportData);
-	virtual void setPanTiltMotionProfileAction(SetPanTiltMotionProfile msg, Receive::Body::ReceiveRec transportData);
+		/// Guard Methods
+		virtual bool isControllingClient(Receive::Body::ReceiveRec transportData);
+		virtual bool panTiltMotionProfileExists();
 
+		void add_listener(iop::PanTiltMotionProfileListenerInterface *listener);
+		ReportPanTiltMotionProfile get_current_motion_profile() { return p_motion_profile; }
+		void reset_motion_profile();
 
-	/// Guard Methods
-	virtual bool isControllingClient(Receive::Body::ReceiveRec transportData);
-	virtual bool panTiltMotionProfileExists();
+		PanTiltMotionProfileService_ReceiveFSMContext *context;
 
-	void add_listener(iop::PanTiltMotionProfileListenerInterface *listener);
-	ReportPanTiltMotionProfile get_current_motion_profile() { return p_motion_profile; }
-	void reset_motion_profile();
+	protected:
+		/// References to parent FSMs
+		urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM *pAccessControl_ReceiveFSM;
+		urn_jaus_jss_core_Events::Events_ReceiveFSM *pEvents_ReceiveFSM;
+		urn_jaus_jss_core_Transport::Transport_ReceiveFSM *pTransport_ReceiveFSM;
 
+		std::shared_ptr<iop::Component> cmp;
+		rclcpp::Logger logger;
 
+		ReportPanTiltMotionProfile p_motion_profile;
+		std::vector<iop::PanTiltMotionProfileListenerInterface *> p_motion_listener;
+		bool p_has_profile;
+		std::pair<moveit_msgs::msg::JointLimits, moveit_msgs::msg::JointLimits> p_joint_limits_defaults;
+		std::pair<moveit_msgs::msg::JointLimits, moveit_msgs::msg::JointLimits> p_joint_limits_current;
+		rclcpp::Publisher<moveit_msgs::msg::JointLimits>::SharedPtr p_pub_joint1_limits;
+		rclcpp::Publisher<moveit_msgs::msg::JointLimits>::SharedPtr p_pub_joint2_limits;
+		double joint1_max_speed;
+		double joint1_max_accel;
+		double joint1_max_decel;
+		double joint2_max_speed;
+		double joint2_max_accel;
+		double joint2_max_decel;
 
-	PanTiltMotionProfileService_ReceiveFSMContext *context;
-
-protected:
-
-    /// References to parent FSMs
-	urn_jaus_jss_core_Transport::Transport_ReceiveFSM* pTransport_ReceiveFSM;
-	urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM;
-	urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM* pAccessControl_ReceiveFSM;
-
-	ReportPanTiltMotionProfile p_motion_profile;
-	std::vector<iop::PanTiltMotionProfileListenerInterface*> p_motionp_listener;
-	bool p_has_profile;
-	std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> p_joint_limits_defaults;
-	std::pair<moveit_msgs::JointLimits, moveit_msgs::JointLimits> p_joint_limits_current;
-	ros::Publisher p_pub_joint1_limits;
-	ros::Publisher p_pub_joint2_limits;
-	double joint1_max_speed;
-	double joint1_max_accel;
-	double joint1_max_decel;
-	double joint2_max_speed;
-	double joint2_max_accel;
-	double joint2_max_decel;
-
-	void pNotifyListeners(JausAddress reporter, ReportPanTiltMotionProfile profile);
-};
+		void pNotifyListeners(JausAddress reporter, ReportPanTiltMotionProfile profile);
+	};
 
 };
 
