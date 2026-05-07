@@ -11,7 +11,7 @@ Control the pantil by position commands. To control the pantilt by JointState th
 
 _use_posestamped (bool_ Default: "false")
 
-> Adds support for geometry_msgs::PoseStamped message.
+> Adds support for geometry_msgs::msg::PoseStamped message.
 
 _tf_frame_pantilt (str_ Default: "")
 
@@ -19,21 +19,21 @@ _tf_frame_pantilt (str_ Default: "")
 
 #### Publisher:
 
-_cmd_pos_joints (sensor_msgs::JointState)_
+_cmd_pos_joints (sensor_msgs::msg::JointState)_
 
 > Position commands for specified joints.
 
-_cmd_pos_pan (std_msgs::Float64)_
-_cmd_pos_pan32 (std_msgs::Float32)_
+_cmd_pos_pan (std_msgs::msg::Float64)_
+_cmd_pos_pan32 (std_msgs::msg::Float32)_
 
 > Pan position.
 
-_cmd_pos_tilt (std_msgs::Float64)_
-_cmd_pos_tilt32 (std_msgs::Float32)_
+_cmd_pos_tilt (std_msgs::msg::Float64)_
+_cmd_pos_tilt32 (std_msgs::msg::Float32)_
 
 > Tils position.
 
-_cmd_pos_pantilt (geometry_msgs::PoseStamped)_
+_cmd_pos_pantilt (geometry_msgs::msg::PoseStamped)_
 
 > only if ```use_posestamped``` is true.
 
@@ -52,7 +52,7 @@ Reads the pantitl position and reports them by ReportPanTiltJointPositions. To r
 
 _use_posestamped (bool_ Default: "false")
 
-> Adds support for geometry_msgs::PoseStamped message.
+> Adds support for geometry_msgs::msg::PoseStamped message.
 
 _tf_frame_pantilt (str_ Default: "")
 
@@ -64,21 +64,21 @@ _tf_frame_pantilt (str_ Default: "")
 
 #### Subscriber:
 
-_pos_joints (sensor_msgs::JointState)_
+_pos_joints (sensor_msgs::msg::JointState)_
 
 > Position for specified joints.
 
-_pos_pan (std_msgs::Float64)_
-_pos_pan32 (std_msgs::Float32)_
+_pos_pan (std_msgs::msg::Float64)_
+_pos_pan32 (std_msgs::msg::Float32)_
 
 > Pan position.
 
-_pos_tilt (std_msgs::Float64)_
-_pos_tilt32 (std_msgs::Float32)_
+_pos_tilt (std_msgs::msg::Float64)_
+_pos_tilt32 (std_msgs::msg::Float32)_
 
 > Tils position.
 
-_pos_pantilt (geometry_msgs::PoseStamped)_
+_pos_pantilt (geometry_msgs::msg::PoseStamped)_
 
 > only if ```use_posestamped``` is true.
 

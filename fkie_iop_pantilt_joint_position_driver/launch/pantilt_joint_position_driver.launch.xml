@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="ns" default="myrobot"/>
+  <arg name="robot_ns" default="simbot"/>
+  <arg name="use_sim_time" default="False"/>
+  <arg name="iop_system" default="133" />
+  <group>
+    <push_ros_namespace namespace="$(var robot_ns)"/>
+    <node name="iop_node_manager" pkg="fkie_iop_node_manager" exec="rosiopnodemanager.py" />
+    <node name="iop_pantilt_joint_position_driver" pkg="fkie_iop_component" exec="iop_component" args="--ros-args --log-level info" output="screen" >
+      <param name="use_sim_time" value="$(var use_sim_time)" />
+      <param name="name_node" value="simbot_pantilt_driver"/>
+      <param name="iop_address" value="$(var iop_system).43.15"/>
+      <param name="jaus_config" value="$(find-pkg-share jaustoolset)/cfg/nm.cfg"/>
+      <param from="$(find-pkg-share fkie_iop_pantilt_joint_position_driver)/launch/services.yaml"/>
+    </node>
+  </group>
+</launch>

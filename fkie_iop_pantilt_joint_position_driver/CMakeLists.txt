@@ -1,53 +1,34 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.5)
 project(fkie_iop_pantilt_joint_position_driver)
 
-# we need C++11 enabled if compile with kinetic
-#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x")
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-             fkie_iop_component
-             fkie_iop_management
-             fkie_iop_pantilt_specification_service
-             geometry_msgs
-             moveit_msgs
-             roscpp
-             sensor_msgs
-             std_msgs
-             tf
-)
+# Default to C99
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
 
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-find_package(Boost REQUIRED COMPONENTS system thread)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic -Wno-ignored-qualifiers)
+endif()
 
+
+find_package(ament_cmake REQUIRED)
+find_package(fkie_iop_component REQUIRED)
+find_package(fkie_iop_management REQUIRED)
+find_package(fkie_iop_pantilt_specification_service REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(moveit_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+
+###############
+## setup IOP ##
+###############
 iop_init(COMPONENT_ID 0)
-
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
-
-catkin_package(
-    LIBRARIES ${PROJECT_NAME}
-    CATKIN_DEPENDS
-        fkie_iop_component
-        fkie_iop_management
-        fkie_iop_pantilt_specification_service
-        geometry_msgs
-        moveit_msgs
-        roscpp
-        sensor_msgs
-        std_msgs
-        tf
-    DEPENDS Boost
-)
-
-###########
-## Build ##
-###########
+iop_export_service(urn_jaus_jss_manipulator_PanTiltJointPositionDriver
+                   urn_jaus_jss_manipulator_PanTiltJointPositionSensor)
 
 ## Specify additional locations of header files
 iop_code_generator(
@@ -70,54 +51,91 @@ iop_code_generator(
     include/urn_jaus_jss_manipulator_PanTiltJointPositionSensor/PanTiltJointPositionSensor_ReceiveFSM.h
     src/urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriver_ReceiveFSM.cpp
     src/urn_jaus_jss_manipulator_PanTiltJointPositionSensor/PanTiltJointPositionSensor_ReceiveFSM.cpp
-    src/main.cpp
   EXTERN_SERVICES
     urn_jaus_jss_core_AccessControl
     urn_jaus_jss_core_Events
     urn_jaus_jss_core_Management
     urn_jaus_jss_core_Transport
-    urn_jaus_jss_manipulator_PanTiltMotionProfileService
-    urn_jaus_jss_manipulator_PanTiltSpecificationService
+    urn_jaus_jss_manipulator_PanTiltMotionProfile
+    urn_jaus_jss_manipulator_PanTiltSpecification
   GENERATED_SOURCES cppfiles
 )
 
-include_directories(
-    ${catkin_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
+###########
+## Build ##
+###########
+set(dependencies
+  fkie_iop_component
+  fkie_iop_management
+  fkie_iop_pantilt_specification_service
+  geometry_msgs
+  moveit_msgs
+  sensor_msgs
+  std_msgs
+  tf2
+  tf2_ros
 )
 
-add_library(${PROJECT_NAME}
-            src/PanTiltJointPositionDriverPlugin.cpp
-            src/PanTiltJointPositionSensorPlugin.cpp
+include_directories(
+    include/public
+    ${fkie_iop_management_INCLUDE_DIRS}
+    ${fkie_iop_pantilt_specification_service_INCLUDE_DIRS}
+    ${IOP_COMPONENT_INCLUDE_DIRS}
+)
+add_library(${PROJECT_NAME} SHARED
             ${cppfiles}
 )
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(${PROJECT_NAME}
-                      ${catkin_LIBRARIES}
-                      ${IOP_LIBRARIES}
-                      ${Boost_LIBRARIES}
+target_link_libraries(${PROJECT_NAME} PUBLIC
+  ${geometry_msgs_TARGETS}
+  ${moveit_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
+  ${std_msgs_TARGETS}
+  ${tf2_TARGETS}
+  ${tf2_ros_TARGETS}
+  fkie_iop_management::fkie_iop_management
+  fkie_iop_pantilt_specification_service::fkie_iop_pantilt_specification_service
 )
+
 
 #############
 ## Install ##
 #############
 
-install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
 install(
-  DIRECTORY ${IOP_INSTALL_INCLUDE_DIRS} DESTINATION ${CATKIN_GLOBAL_INCLUDE_DESTINATION}
+  DIRECTORY ${IOP_INSTALL_INCLUDE_DIRS}
+  DESTINATION include/${PROJECT_NAME}
   PATTERN "*.old" EXCLUDE
   PATTERN "*.gen" EXCLUDE
 )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
 install(
-   FILES ./plugin_iop.xml
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  TARGETS ${PROJECT_NAME}
+  EXPORT ${PROJECT_NAME}Targets
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+
+install(
+   DIRECTORY launch
+   DESTINATION share/${PROJECT_NAME}
+)
+
+install(
+  EXPORT ${PROJECT_NAME}Targets
+  FILE ${PROJECT_NAME}Targets.cmake
+  NAMESPACE ${PROJECT_NAME}::
+  DESTINATION share/${PROJECT_NAME}/cmake
+)
+ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
+
+ament_export_include_directories(include ${IOP_COMPONENT_INCLUDE_DIRS} ${fkie_iop_management_INCLUDE_DIRS} ${fkie_iop_pantilt_specification_service_INCLUDE_DIRS})
+ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(${dependencies})
+pluginlib_export_plugin_description_file(fkie_iop_component plugin_iop.xml)
+
+ament_package()
 
