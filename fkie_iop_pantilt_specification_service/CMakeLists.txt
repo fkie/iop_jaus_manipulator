@@ -18,10 +18,6 @@ find_package(sensor_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 
 
-## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system thread)
-
-
 ###############
 ## setup IOP ##
 ###############
@@ -70,7 +66,6 @@ include_directories(
     include/public
     ${fkie_iop_accesscontrol_INCLUDE_DIRS}
     ${IOP_COMPONENT_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME} SHARED
@@ -81,7 +76,6 @@ add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME} PUBLIC
-  ${Boost_TARGETS}
   ${moveit_msgs_TARGETS}
   ${sensor_msgs_TARGETS}
   ${tf2_TARGETS}
