@@ -9,7 +9,6 @@
   <license>GPLv2</license>
   <url type="website">https://github.com/fkie/iop_jaus_manipulator</url>
 
-  <depend>boost</depend>
   <depend>fkie_iop_accesscontrol</depend>
   <depend>fkie_iop_component</depend>
   <depend>moveit_msgs</depend>

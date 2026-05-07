@@ -28,10 +28,10 @@ along with this program; or you can read the full license at
 #include <rclcpp/rclcpp.hpp>
 #include <moveit_msgs/msg/joint_limits.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
-#include "urn_jaus_jss_manipulator_PanTiltSpecificationService/Messages/MessageSet.h"
+#include "urn_jaus_jss_manipulator_PanTiltSpecification/Messages/MessageSet.h"
 
 
-typedef urn_jaus_jss_manipulator_PanTiltSpecificationService::ReportPanTiltSpecifications::Body::ReportPanTiltSpecificationsRec ReportPanTiltSpecificationsRec;
+typedef urn_jaus_jss_manipulator_PanTiltSpecification::ReportPanTiltSpecifications::Body::ReportPanTiltSpecificationsRec ReportPanTiltSpecificationsRec;
 
 namespace iop
 {
@@ -52,7 +52,7 @@ namespace iop
 		bool is_profile_valid();
 
 		/** Retruns the configuration of the manipulator. */
-		urn_jaus_jss_manipulator_PanTiltSpecificationService::ReportPanTiltSpecifications& getJausMsg();
+		urn_jaus_jss_manipulator_PanTiltSpecification::ReportPanTiltSpecifications& getJausMsg();
 		ReportPanTiltSpecificationsRec getPantiltSpecification();
 
 		void p_print_spec();
@@ -61,7 +61,7 @@ namespace iop
 		std::shared_ptr<iop::Component> cmp;
 		rclcpp::Logger logger;
 		std::map<std::string, float> p_joint_positions;
-		urn_jaus_jss_manipulator_PanTiltSpecificationService::ReportPanTiltSpecifications p_jaus_msg;
+		urn_jaus_jss_manipulator_PanTiltSpecification::ReportPanTiltSpecifications p_jaus_msg;
 		ReportPanTiltSpecificationsRec p_pantilt_specification;
 		std::string p_joint1;
 		std::string p_joint2;

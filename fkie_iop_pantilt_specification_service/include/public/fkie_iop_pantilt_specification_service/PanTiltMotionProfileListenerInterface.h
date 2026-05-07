@@ -24,7 +24,7 @@ along with this program; or you can read the full license at
 #define IOP_PANTILT_MOTION_PROFILE_LISTENER_INTERFACE_H_
 
 #include "Transport/JausAddress.h"
-#include "urn_jaus_jss_manipulator_PanTiltMotionProfileService/Messages/MessageSet.h"
+#include "urn_jaus_jss_manipulator_PanTiltMotionProfile/Messages/MessageSet.h"
 
 namespace iop
 {
@@ -37,7 +37,7 @@ namespace iop
 		// ____________________________
 		// === must be overridden =====
 		// ============================
-		virtual void motion_profile_received(JausAddress reporter, urn_jaus_jss_manipulator_PanTiltMotionProfileService::ReportPanTiltMotionProfile profile) = 0;
+		virtual void motion_profile_received(JausAddress reporter, urn_jaus_jss_manipulator_PanTiltMotionProfile::ReportPanTiltMotionProfile profile) = 0;
 
 		virtual ~PanTiltMotionProfileListenerInterface(){}
 

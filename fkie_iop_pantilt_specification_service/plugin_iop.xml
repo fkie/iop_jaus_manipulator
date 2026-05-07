@@ -1,8 +1,8 @@
 <library path="fkie_iop_pantilt_specification_service">
-	<class name="PanTiltMotionProfileService" type="urn_jaus_jss_manipulator_PanTiltMotionProfileService::PanTiltMotionProfileServiceService" base_class_type="JTS::Service"
-		id="urn:jaus:jss:manipulator:PanTiltMotionProfileService" version="2.0">
+	<class name="PanTiltMotionProfile" type="urn_jaus_jss_manipulator_PanTiltMotionProfile::PanTiltMotionProfileService" base_class_type="JTS::Service"
+		id="urn:jaus:jss:manipulator:PanTiltMotionProfile" version="2.0">
 	</class>
-	<class name="PanTiltSpecificationService" type="urn_jaus_jss_manipulator_PanTiltSpecificationService::PanTiltSpecificationServiceService" base_class_type="JTS::Service"
-		id="urn:jaus:jss:manipulator:PanTiltSpecificationService" version="2.0">
+	<class name="PanTiltSpecification" type="urn_jaus_jss_manipulator_PanTiltSpecification::PanTiltSpecificationService" base_class_type="JTS::Service"
+		id="urn:jaus:jss:manipulator:PanTiltSpecification" version="2.0">
 	</class>
 </library>

@@ -26,7 +26,7 @@ along with this program; or you can read the full license at
 #include <fkie_iop_component/iop_config.hpp>
 #include "fkie_iop_pantilt_specification_service/PantiltCfgReader.h"
 
-using namespace urn_jaus_jss_manipulator_PanTiltSpecificationService;
+using namespace urn_jaus_jss_manipulator_PanTiltSpecification;
 using namespace iop;
 
 PantiltCfgReader::PantiltCfgReader(std::shared_ptr<iop::Component> cmp)

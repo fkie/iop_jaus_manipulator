@@ -26,8 +26,8 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 ## setup IOP ##
 ###############
 iop_init(COMPONENT_ID 0)
-iop_export_service(urn_jaus_jss_manipulator_PanTiltSpecificationService
-                   urn_jaus_jss_manipulator_PanTiltMotionProfileService)
+iop_export_service(urn_jaus_jss_manipulator_PanTiltSpecification
+                   urn_jaus_jss_manipulator_PanTiltMotionProfile)
 
 
 # Specify additional locations of header files
@@ -44,10 +44,10 @@ iop_code_generator(
     urn.jaus.jss.manipulator-v2.0/PanTiltSpecificationService.xml
   OWN_IDLS
   OVERRIDES
-    include/urn_jaus_jss_manipulator_PanTiltMotionProfileService/PanTiltMotionProfileService_ReceiveFSM.h
-    include/urn_jaus_jss_manipulator_PanTiltSpecificationService/PanTiltSpecificationService_ReceiveFSM.h
-    src/urn_jaus_jss_manipulator_PanTiltMotionProfileService/PanTiltMotionProfileService_ReceiveFSM.cpp
-    src/urn_jaus_jss_manipulator_PanTiltSpecificationService/PanTiltSpecificationService_ReceiveFSM.cpp
+    include/urn_jaus_jss_manipulator_PanTiltMotionProfile/PanTiltMotionProfile_ReceiveFSM.h
+    include/urn_jaus_jss_manipulator_PanTiltSpecification/PanTiltSpecification_ReceiveFSM.h
+    src/urn_jaus_jss_manipulator_PanTiltMotionProfile/PanTiltMotionProfile_ReceiveFSM.cpp
+    src/urn_jaus_jss_manipulator_PanTiltSpecification/PanTiltSpecification_ReceiveFSM.cpp
   EXTERN_SERVICES
     urn_jaus_jss_core_AccessControl
     urn_jaus_jss_core_Events
