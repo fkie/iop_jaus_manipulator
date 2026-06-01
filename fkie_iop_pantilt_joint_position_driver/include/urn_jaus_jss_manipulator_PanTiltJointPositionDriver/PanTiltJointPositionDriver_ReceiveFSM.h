@@ -53,7 +53,7 @@ along with this program; or you can read the full license at
 
 namespace urn_jaus_jss_manipulator_PanTiltJointPositionDriver {
 
-class DllExport PanTiltJointPositionDriver_ReceiveFSM : public JTS::StateMachine {
+class DllExport PanTiltJointPositionDriver_ReceiveFSM : public JTS::StateMachine, public iop::PanTiltMotionProfileListenerInterface {
 public:
     PanTiltJointPositionDriver_ReceiveFSM(std::shared_ptr<iop::Component> cmp, urn_jaus_jss_core_Management::Management_ReceiveFSM* pManagement_ReceiveFSM, urn_jaus_jss_core_AccessControl::AccessControl_ReceiveFSM* pAccessControl_ReceiveFSM, urn_jaus_jss_core_Events::Events_ReceiveFSM* pEvents_ReceiveFSM, urn_jaus_jss_core_Transport::Transport_ReceiveFSM* pTransport_ReceiveFSM);
     virtual ~PanTiltJointPositionDriver_ReceiveFSM();

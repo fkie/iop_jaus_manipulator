@@ -87,7 +87,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
 #############
 
 install(
-  DIRECTORY ${IOP_INSTALL_INCLUDE_DIRS}
+  DIRECTORY ${IOP_INSTALL_INCLUDE_DIRS} include/public/${PROJECT_NAME}/.
   DESTINATION include/${PROJECT_NAME}
   PATTERN "*.old" EXCLUDE
   PATTERN "*.gen" EXCLUDE
