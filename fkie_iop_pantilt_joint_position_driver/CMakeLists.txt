@@ -37,14 +37,14 @@ iop_code_generator(
 # OVERRIDES: files which override the generated files while build. The generated files are copied to the same location with .gen extension
 # EXTERN_SERVICES: the generated folder name of a service which is used from other library. This folder must be deleted while build.
   IDLS
-    urn.jaus.jss.core-v1.1/AccessControl.xml
-    urn.jaus.jss.core-v1.1/Events.xml
-    urn.jaus.jss.core-v1.1/Management.xml
-    urn.jaus.jss.core-v1.1/Transport.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltJointPositionDriver.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltJointPositionSensor.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltMotionProfileService.xml
-    urn.jaus.jss.manipulator-v2.0/PanTiltSpecificationService.xml
+    urn.jaus.jss.core/AccessControl.xml
+    urn.jaus.jss.core/Events.xml
+    urn.jaus.jss.core/Management.xml
+    urn.jaus.jss.core/Transport.xml
+    urn.jaus.jss.manipulator/PanTiltJointPositionDriver.xml
+    urn.jaus.jss.manipulator/PanTiltJointPositionSensor.xml
+    urn.jaus.jss.manipulator/PanTiltMotionProfileService.xml
+    urn.jaus.jss.manipulator/PanTiltSpecificationService.xml
   OWN_IDLS
   OVERRIDES
     include/urn_jaus_jss_manipulator_PanTiltJointPositionDriver/PanTiltJointPositionDriver_ReceiveFSM.h
