@@ -26,6 +26,7 @@ along with this program; or you can read the full license at
 
 #include <string>
 #include <rclcpp/rclcpp.hpp>
+#include <fkie_iop_component/iop_component.hpp>
 #include <moveit_msgs/msg/joint_limits.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 #include "urn_jaus_jss_manipulator_PanTiltSpecification/Messages/MessageSet.h"
@@ -39,7 +40,7 @@ namespace iop
 	class PantiltCfgReader
 	{
 	public:
-		PantiltCfgReader(std::shared_ptr<iop::Component> cmp);
+		PantiltCfgReader(std::shared_ptr<Component> cmp);
 		virtual ~PantiltCfgReader();
 		/** Reads the parameter from ROS parameter server, parses there stored
 		* robot_description and generates the JAUS specification for manipulator. */
@@ -58,7 +59,7 @@ namespace iop
 		void p_print_spec();
 
 	protected:
-		std::shared_ptr<iop::Component> cmp;
+		std::shared_ptr<Component> cmp;
 		rclcpp::Logger logger;
 		std::map<std::string, float> p_joint_positions;
 		urn_jaus_jss_manipulator_PanTiltSpecification::ReportPanTiltSpecifications p_jaus_msg;

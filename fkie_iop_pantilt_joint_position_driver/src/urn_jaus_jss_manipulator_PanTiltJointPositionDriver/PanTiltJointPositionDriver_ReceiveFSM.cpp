@@ -103,17 +103,15 @@ void PanTiltJointPositionDriver_ReceiveFSM::setupIopConfiguration()
     }
 
     iop::Config cfg(cmp, "PanTiltJointPositionDriver");
-    cfg.declare_param<bool>("use_posestamped", p_use_posestamped, true,
+    cfg.param<bool>("use_posestamped", p_use_posestamped, p_use_posestamped, true,
         rcl_interfaces::msg::ParameterType::PARAMETER_BOOL,
         "Adds support for geometry_msgs::msg::PoseStamped message",
         "Default: false");
-    cfg.declare_param<std::string>("p_tf_frame_pantilt", p_tf_frame_pantilt, true,
-        rcl_interfaces::msg::ParameterType::PARAMETER_STRING,
-        "Only if ```use_posestamped``` is true. Sets the given frame_id in ROS message header before send to ROS",
-        "Default: ''");
-    cfg.param("use_posestamped", p_use_posestamped, p_use_posestamped);
     if (p_use_posestamped) {
-        cfg.param("tf_frame_pantilt", p_tf_frame_pantilt, p_tf_frame_pantilt);
+        cfg.param<std::string>("tf_frame_pantilt", p_tf_frame_pantilt, p_tf_frame_pantilt, true,
+            rcl_interfaces::msg::ParameterType::PARAMETER_STRING,
+            "Only if ```use_posestamped``` is true. Sets the given frame_id in ROS message header before send to ROS",
+            "Default: ''");
         p_pub_pos_stamped = cfg.create_publisher<geometry_msgs::msg::PoseStamped>("cmd_pos_pantilt", 5);
     }
     p_pub_cmd_pos_joints = cfg.create_publisher<sensor_msgs::msg::JointState>("cmd_pos_joints", 1);
